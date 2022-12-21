@@ -1,2 +1,2 @@
-# repository
-A CRUD operation helper class encapsulating the logic required to access data sources.
+# api
+An tiny repository-based Javascript http-client powered by axios.
