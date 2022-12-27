@@ -1,7 +1,7 @@
 # laravel-orion-api
 A Laravel Orion compatible repository-based Javascript http-client powered by axios.
 
-## default methods
+### default methods
 - index
 - search
 - show
@@ -9,12 +9,12 @@ A Laravel Orion compatible repository-based Javascript http-client powered by ax
 - create
 - delete
 
-## batch methods
+### batch methods
 - batchUpdate
 - batchCreate
 - batchDelete
 
-## relational methods
+### relational methods
 - attach
 - detach
 - sync

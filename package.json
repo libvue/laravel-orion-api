@@ -1,0 +1,19 @@
+{
+  "name": "laravel-orion-api",
+  "version": "0.0.0",
+  "description": "A Laravel Orion compatible repository-based Javascript http-client powered by axios.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/libvue/laravel-orion-api.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/libvue/laravel-orion-api/issues"
+  },
+  "homepage": "https://github.com/libvue/laravel-orion-api#readme",
+  "dependencies": {
+    "axios": "^1.2.1"
+  }
+}
