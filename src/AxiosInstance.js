@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export default class AxiosInstance {
     constructor(AxiosConfig = {}) {
@@ -6,6 +6,6 @@ export default class AxiosInstance {
             ...AxiosConfig,
         });
         this.baseURL = '/';
-        this.path = ''
+        this.path = '';
     }
 }

@@ -1,7 +1,6 @@
-import AxiosInstance from "./AxiosInstance";
+import AxiosInstance from './AxiosInstance';
 
 export default class LaravelOrionAPI extends AxiosInstance {
-
     constructor(AxiosConfig = {}) {
         super(AxiosConfig);
     }
@@ -233,8 +232,8 @@ export default class LaravelOrionAPI extends AxiosInstance {
             baseURL: this.baseURL,
             path: `${this.path}/${id}/${relation}/associate`,
             data: {
-                related_key: relatedKey
-            }
+                related_key: relatedKey,
+            },
         });
     }
 
