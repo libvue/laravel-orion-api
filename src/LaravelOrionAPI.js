@@ -1,16 +1,19 @@
-import AxiosInstance from './AxiosInstance';
+import AxiosInstance from './classes/AxiosInstance';
+import Transformer from './classes/Transformer';
+import DEFAULT_AXIOS_CONFIG from './configs/defaultAxiosConfig';
 
-export default class LaravelOrionAPI extends AxiosInstance {
-    constructor(AxiosConfig = {}) {
+class LaravelOrionAPI extends AxiosInstance {
+    constructor(AxiosConfig = DEFAULT_AXIOS_CONFIG) {
         super(AxiosConfig);
+        this.baseURL = '/';
+        this.path = '';
     }
 
     index(data) {
         return this.axios({
             method: 'GET',
             baseURL: this.baseURL,
-            path: this.path,
-            data,
+            url: `${this.path}/${Transformer.toGetQuery(data)}`,
         });
     }
 
@@ -18,33 +21,38 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            path: `${this.path}/search`,
-            data,
+            url: `${this.path}/search`,
+            data: Transformer.toPostData(data),
         });
     }
 
-    store(data) {
+    store(data, multipart = false) {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            path: this.path,
+            ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
+            url: this.path,
             data,
         });
     }
 
-    show(id) {
+    show(id, data) {
         return this.axios({
             method: 'GET',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}`,
+            url: `${this.path}/${id}${Transformer.toGetQuery(data)}`,
         });
     }
 
-    update(id, data) {
+    update(id, data, multipart) {
+        if (multipart) {
+            data.append('_method', 'PATCH');
+        }
         return this.axios({
-            method: 'PATCH',
+            method: multipart ? 'POST' : 'PATCH',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}`,
+            ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
+            url: `${this.path}/${id}`,
             data,
         });
     }
@@ -53,15 +61,16 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}`,
+            url: `${this.path}/${id}`,
         });
     }
 
-    batchStore(data) {
+    batchStore(data, multipart = false) {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            path: `${this.path}/batch`,
+            ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
+            url: `${this.path}/batch`,
             data,
         });
     }
@@ -70,7 +79,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'PATCH',
             baseURL: this.baseURL,
-            path: `${this.path}/batch`,
+            url: `${this.path}/batch`,
             data,
         });
     }
@@ -79,7 +88,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
-            path: `${this.path}/batch`,
+            url: `${this.path}/batch`,
             data,
         });
     }
@@ -88,8 +97,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'GET',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}`,
-            data,
+            url: `${this.path}/${id}/${relation}${Transformer.toGetQuery(data)}`,
         });
     }
 
@@ -97,8 +105,8 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/search`,
-            data,
+            url: `${this.path}/${id}/${relation}/search`,
+            data: Transformer.toPostData(data),
         });
     }
 
@@ -106,25 +114,29 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'GET',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/${relationId}`,
-            data,
+            url: `${this.path}/${id}/${relation}/${relationId}${Transformer.toGetQuery(data)}`,
         });
     }
 
-    storeRelation(id, relation, data) {
+    storeRelation(id, relation, data, multipart) {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}`,
+            url: `${this.path}/${id}/${relation}`,
+            ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             data,
         });
     }
 
-    updateRelation(id, relation, relationId, data) {
+    updateRelation(id, relation, relationId, data, multipart) {
+        if (multipart) {
+            data.append('_method', 'PATCH');
+        }
         return this.axios({
-            method: 'PATCH',
+            method: multipart ? 'POST' : 'PATCH',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/${relationId}`,
+            ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
+            url: `${this.path}/${id}/${relation}/${relationId}`,
             data,
         });
     }
@@ -133,7 +145,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'PATCH',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/${relationId}`,
+            url: `${this.path}/${id}/${relation}/${relationId}`,
         });
     }
 
@@ -141,24 +153,29 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/${relationId}/restore`,
+            url: `${this.path}/${id}/${relation}/${relationId}/restore`,
         });
     }
 
-    batchStoreRelation(id, relation, data) {
+    batchStoreRelation(id, relation, data, multipart) {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/batch`,
+            ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
+            url: `${this.path}/${id}/${relation}/batch`,
             data,
         });
     }
 
-    batchUpdateRelation(id, relation, data) {
+    batchUpdateRelation(id, relation, data, multipart) {
+        if (multipart) {
+            data.append('_method', 'PATCH');
+        }
         return this.axios({
-            method: 'PATCH',
+            method: multipart ? 'POST' : 'PATCH',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/batch`,
+            url: `${this.path}/${id}/${relation}/batch`,
+            ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             data,
         });
     }
@@ -167,7 +184,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/batch`,
+            url: `${this.path}/${id}/${relation}/batch`,
             data,
         });
     }
@@ -176,7 +193,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/batch/restore`,
+            url: `${this.path}/${id}/${relation}/batch/restore`,
             data,
         });
     }
@@ -185,7 +202,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'PATCH',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/sync`,
+            url: `${this.path}/${id}/${relation}/sync`,
             data,
         });
     }
@@ -194,7 +211,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'PATCH',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/toggle`,
+            url: `${this.path}/${id}/${relation}/toggle`,
             data,
         });
     }
@@ -203,7 +220,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/attach`,
+            url: `${this.path}/${id}/${relation}/attach`,
             data,
         });
     }
@@ -212,7 +229,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/detach`,
+            url: `${this.path}/${id}/${relation}/detach`,
             data,
         });
     }
@@ -221,7 +238,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'PATCH',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/${relationId}/pivot`,
+            url: `${this.path}/${id}/${relation}/${relationId}/pivot`,
             data,
         });
     }
@@ -230,7 +247,7 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/associate`,
+            url: `${this.path}/${id}/${relation}/associate`,
             data: {
                 related_key: relatedKey,
             },
@@ -241,7 +258,9 @@ export default class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
-            path: `${this.path}/${id}/${relation}/${relationId}/disassociate`,
+            url: `${this.path}/${id}/${relation}/${relationId}/disassociate`,
         });
     }
 }
+
+export default LaravelOrionAPI;
