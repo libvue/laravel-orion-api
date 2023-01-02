@@ -1,4 +1,4 @@
 import LaravelOrionAPI from './LaravelOrionAPI';
-import AxiosInstance from './AxiosInstance';
+import AxiosInstance, { axios } from './classes/AxiosInstance';
 
-export { LaravelOrionAPI, AxiosInstance };
+export { LaravelOrionAPI, AxiosInstance, axios };
