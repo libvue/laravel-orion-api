@@ -34,6 +34,9 @@ class Transformer {
         Object.entries(DEFAULT_GET_CONFIG).forEach(([key]) => {
             // Check if given option is not null
             if (typeof options[key] !== 'undefined' && options[key] !== null) {
+                if(query !== '?' && GetParsers.parseByKey(key, options[key], true)) {
+                    query += '&';
+                }
                 query += GetParsers.parseByKey(key, options[key], true);
             }
         });
