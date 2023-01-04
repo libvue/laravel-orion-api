@@ -143,7 +143,7 @@ class LaravelOrionAPI extends AxiosInstance {
 
     destroyRelation(id, relation, relationId) {
         return this.axios({
-            method: 'PATCH',
+            method: 'DELETE',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/${relationId}`,
         });
