@@ -1,26 +1,30 @@
-import DEFAULT_POST_CONFIG from '../configs/defaultPostConfig';
-import DEFAULT_GET_CONFIG from '../configs/defaultGetConfig';
+import REQUEST_CONFIG from '../configs/request';
 import PostParsers from '../parsers/PostParsers';
 import GetParsers from "../parsers/GetParsers";
+
+const DEFAULT_POST_CONFIG = REQUEST_CONFIG.post;
+const DEFAULT_GET_CONFIG = REQUEST_CONFIG.get;
 
 class Transformer {
     /**
      * toPostData
      * @description: Convert options object to POST data that Orion understands.
-     * @param options
+     * @param data
      * @returns {{}}
      */
-    static toPostData(options = DEFAULT_POST_CONFIG) {
-        const data = {};
+    static toPostData(data = DEFAULT_POST_CONFIG) {
+        const transformedData = {};
+        
+        // Walk through each key in the DEFAULT_POST_CONFIG object.
         Object.entries(DEFAULT_POST_CONFIG).forEach(([key, defaultValue]) => {
             // Check if given option is not null
-            if (typeof options[key] !== 'undefined' && options[key] !== null) {
-                data[key] = PostParsers.parseByKey(key, options[key]);
+            if (typeof data[key] !== 'undefined' && data[key] !== null) {
+                transformedData[key] = PostParsers.parseByKey(key, data[key]);
             } else if (typeof defaultValue !== 'undefined' && defaultValue !== null) {
-                data[key] = defaultValue;
+                transformedData[key] = defaultValue;
             }
         });
-        return data;
+        return transformedData;
     }
 
     /**

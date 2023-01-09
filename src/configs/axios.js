@@ -1,6 +1,4 @@
-const DEFAULT_AXIOS_CONFIG = {
+export default {
     headers: { 'X-Requested-With': 'XMLHttpRequest' },
     withCredentials: true,
 };
-
-export default DEFAULT_AXIOS_CONFIG;

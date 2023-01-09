@@ -1,9 +1,9 @@
 import AxiosInstance from './classes/AxiosInstance';
 import Transformer from './classes/Transformer';
-import DEFAULT_AXIOS_CONFIG from './configs/defaultAxiosConfig';
+import AXIOS_CONFIG from './configs/axios';
 
 class LaravelOrionAPI extends AxiosInstance {
-    constructor(AxiosConfig = DEFAULT_AXIOS_CONFIG) {
+    constructor(AxiosConfig = AXIOS_CONFIG) {
         super(AxiosConfig);
         this.baseURL = '/';
         this.path = '';
