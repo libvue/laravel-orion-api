@@ -1,6 +1,6 @@
 import REQUEST_CONFIG from '../configs/request';
-import PostParsers from '../parsers/PostParsers';
-import GetParsers from "../parsers/GetParsers";
+import PostParsers from './PostParsers';
+import GetParsers from "./GetParsers";
 
 const DEFAULT_POST_CONFIG = REQUEST_CONFIG.post;
 const DEFAULT_GET_CONFIG = REQUEST_CONFIG.get;
@@ -35,7 +35,7 @@ class Transformer {
      */
     static toGetQuery(options = DEFAULT_GET_CONFIG) {
         let query = '?';
-        Object.entries(DEFAULT_GET_CONFIG).forEach(([key]) => {
+        Object.entries({ ...DEFAULT_GET_CONFIG, ...options }).forEach(([key]) => {
             // Check if given option is not null
             if (typeof options[key] !== 'undefined' && options[key] !== null) {
                 if(query !== '?' && GetParsers.parseByKey(key, options[key], true)) {

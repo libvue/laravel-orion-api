@@ -12,7 +12,7 @@ export default class GetParsers {
         if (key === 'includes') {
             return this.parseIncludes(value);
         }
-        return '';
+        return `${key}=${value}`;
     }
     
     /**

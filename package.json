@@ -12,7 +12,8 @@
         "src"
     ],
     "scripts": {
-        "test": "vitest"
+        "test": "vitest",
+        "coverage": "vitest run --coverage"
     },
     "license": "MIT",
     "bugs": {
@@ -23,6 +24,7 @@
         "axios": "^1.2.1"
     },
     "devDependencies": {
+        "@vitest/coverage-c8": "^0.26.3",
         "eslint": "^8.30.0",
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-prettier": "^8.5.0",
