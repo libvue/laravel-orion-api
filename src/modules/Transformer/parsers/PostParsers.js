@@ -1,4 +1,4 @@
-import ensureType from '../utils/ensureType';
+import ensureType from '../../../utils/ensureType';
 
 export default class PostParsers {
     static parseByKey(key, value) {
@@ -37,7 +37,7 @@ export default class PostParsers {
                 case_sensitive: false,
             };
         }
-        return null;
+        return value;
     }
 
     static parseSort(value) {
@@ -54,6 +54,6 @@ export default class PostParsers {
             // We re
             return value;
         }
-        return null;
+        return value;
     }
 }

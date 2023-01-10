@@ -1,6 +1,7 @@
 # laravel-orion-api
 
 [![license](https://img.shields.io/badge/license-MIT-blue)](https://img.shields.io/badge/license-MIT-blue)
+[![coverage](https://img.shields.io/badge/coverage-98.78%25-green)](https://img.shields.io/badge/coverage-98.78%25-blue)
 [![npm (tag)](https://img.shields.io/npm/v/@libvue/laravel-orion-api/latest?label=npm%20package)](https://badge.fury.io/js/@libvue%2Flaravel-orion-api)
 
 #### A Laravel Orion compatible repository-based Javascript http-client powered by axios.

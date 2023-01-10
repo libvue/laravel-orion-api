@@ -6,8 +6,8 @@
  * @returns {*|number|boolean}
  */
 export default function ensureType(value) {
-    if (parseInt(value, 10)) {
-        return parseInt(value, 10);
+    if (parseFloat(value)) {
+        return parseFloat(value);
     }
     if (value === 'true') {
         return true;

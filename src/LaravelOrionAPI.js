@@ -1,5 +1,5 @@
-import AxiosInstance from './classes/AxiosInstance';
-import Transformer from './classes/Transformer';
+import AxiosInstance from './modules/AxiosInstance';
+import Transformer from './modules/Transformer/Transformer';
 import AXIOS_CONFIG from './configs/axios';
 
 class LaravelOrionAPI extends AxiosInstance {
@@ -258,7 +258,7 @@ class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
-            url: `${this.path}/${id}/${relation}/${relationId}/disassociate`,
+            url: `${this.path}/${id}/${relation}/${relationId}/dissociate`,
         });
     }
 }
