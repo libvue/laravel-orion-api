@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
     test: {
+        setupFiles: ['./test/SetupRequest.js'],
         coverage: {
             provider: 'c8',
             reporter: ['text', 'json', 'html'],

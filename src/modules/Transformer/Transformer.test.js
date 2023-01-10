@@ -1,10 +1,16 @@
 import { expect, test, describe } from 'vitest';
-import Transformer from '../src/classes/Transformer';
+import Transformer from './Transformer';
 
 describe('The toPostData method of the Transformer class works properly.', () => {
     test('defaults', () => {
         expect(Transformer.toPostData({})).toStrictEqual(
             { page: 1, limit: 20 }
+        );
+    })
+    
+    test('random key value pairs keep unchanged', () => {
+        expect(Transformer.toPostData({ hello: 'world' })).toStrictEqual(
+            { page: 1, limit: 20, hello: 'world' }
         );
     })
     
@@ -22,11 +28,43 @@ describe('The toPostData method of the Transformer class works properly.', () =>
         );
     });
     
+    test('parseSort with non-string / array value is not transformed', () => {
+        expect(Transformer.toPostData({
+            sort: {},
+        })).toStrictEqual(
+            { page: 1, limit: 20, sort: {} }
+        );
+    });
+    
     test('parseSearch', () => {
         expect(Transformer.toPostData({
             search: 'hello',
         })).toStrictEqual(
             { page: 1, limit: 20, search: { case_sensitive: false, value: 'hello' }}
+        );
+    });
+    
+    test('parseSearch with null is dropped', () => {
+        expect(Transformer.toPostData({
+            search: null,
+        })).toStrictEqual(
+            { page: 1, limit: 20 }
+        );
+    });
+    
+    test('parseSearch with non-string type is not transformed', () => {
+        expect(Transformer.toPostData({
+            search: {},
+        })).toStrictEqual(
+            { page: 1, limit: 20, search: {} }
+        );
+    });
+    
+    test('parseSort with null is dropped', () => {
+        expect(Transformer.toPostData({
+            sort: null,
+        })).toStrictEqual(
+            { page: 1, limit: 20 }
         );
     });
     
