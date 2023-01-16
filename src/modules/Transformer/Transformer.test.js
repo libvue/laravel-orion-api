@@ -72,10 +72,11 @@ describe('The toPostData method of the Transformer class works properly.', () =>
         expect(Transformer.toPostData({
             filters: [
                 { field: 'hello', value: 'world' },
+                { field: 'startDate', value: '01-01-2020' },
                 { field: 'is-should-be-removed', value: null },
             ],
         })).toStrictEqual(
-            { page: 1, limit: 20, filters: [{ field: 'hello', value: 'world' }]}
+            { page: 1, limit: 20, filters: [{ field: 'hello', value: 'world' }, { field: 'startDate', value: '01-01-2020' }]}
         );
     });
 })

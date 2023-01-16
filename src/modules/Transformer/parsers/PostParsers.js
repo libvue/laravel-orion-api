@@ -1,5 +1,3 @@
-import ensureType from '../../../utils/ensureType';
-
 export default class PostParsers {
     static parseByKey(key, value) {
         if (key === 'sort') {
@@ -24,7 +22,7 @@ export default class PostParsers {
             } else {
                 // We can keep the value, but we must ensure the type!
                 // eslint-disable-next-line no-param-reassign
-                obj.value = ensureType(obj.value);
+                obj.value = obj.value;
             }
         });
         return clonedValue;
