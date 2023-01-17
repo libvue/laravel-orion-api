@@ -17,7 +17,7 @@ export default class PostParsers {
         const clonedValue = [...value];
         clonedValue.forEach((obj, index) => {
             // Check if the value should be removed
-            if (typeof obj.value === 'undefined' || obj.value === null) {
+            if (typeof obj.value === 'undefined') {
                 clonedValue.splice(index, 1);
             } else {
                 // We can keep the value, but we must ensure the type!

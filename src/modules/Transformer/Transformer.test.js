@@ -73,10 +73,11 @@ describe('The toPostData method of the Transformer class works properly.', () =>
             filters: [
                 { field: 'hello', value: 'world' },
                 { field: 'startDate', value: '01-01-2020' },
-                { field: 'is-should-be-removed', value: null },
+                { field: 'null-should-stay', value: null },
+                { field: 'undefined-should-go', value: undefined },
             ],
         })).toStrictEqual(
-            { page: 1, limit: 20, filters: [{ field: 'hello', value: 'world' }, { field: 'startDate', value: '01-01-2020' }]}
+            { page: 1, limit: 20, filters: [{ field: 'hello', value: 'world' }, { field: 'startDate', value: '01-01-2020' }, { field: 'null-should-stay', value: null }]}
         );
     });
 })
