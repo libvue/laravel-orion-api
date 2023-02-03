@@ -12,6 +12,32 @@ describe('All methods are working properly', () => {
         expect(result.config.url).toBe('users/');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
+    
+    test('index with_trashed', async () => {
+        let result = null;
+        await UserRepository.index({
+            with_trashed: true,
+        }).then((data) => {
+            result = data;
+        });
+        
+        expect(result.config.method).toBe('get');
+        expect(result.config.url).toBe('users/?with_trashed=true');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('index only_trashed', async () => {
+        let result = null;
+        await UserRepository.index({
+            only_trashed: true,
+        }).then((data) => {
+            result = data;
+        });
+        
+        expect(result.config.method).toBe('get');
+        expect(result.config.url).toBe('users/?only_trashed=true');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
 
     test('search', async () => {
         let result = null;
@@ -23,6 +49,32 @@ describe('All methods are working properly', () => {
         expect(result.config.url).toBe('users/search');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
+    
+    test('search with_trashed', async () => {
+        let result = null;
+        await UserRepository.search({
+            with_trashed: true,
+        }).then((data) => {
+            result = data;
+        });
+        
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/search?with_trashed=true');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('search only_trashed', async () => {
+        let result = null;
+        await UserRepository.search({
+            only_trashed: true,
+        }).then((data) => {
+            result = data;
+        });
+        
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/search?only_trashed=true');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
 
     test('show', async () => {
         let result = null;
@@ -32,6 +84,32 @@ describe('All methods are working properly', () => {
         
         expect(result.config.method).toBe('get');
         expect(result.config.url).toBe('users/1');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('show with_trashed', async () => {
+        let result = null;
+        await UserRepository.show(1, {
+            with_trashed: true,
+        }).then((data) => {
+            result = data;
+        });
+        
+        expect(result.config.method).toBe('get');
+        expect(result.config.url).toBe('users/1?with_trashed=true');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('show only_trashed', async () => {
+        let result = null;
+        await UserRepository.show(1, {
+            only_trashed: true,
+        }).then((data) => {
+            result = data;
+        });
+        
+        expect(result.config.method).toBe('get');
+        expect(result.config.url).toBe('users/1?only_trashed=true');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
 
@@ -168,6 +246,32 @@ describe('All methods are working properly', () => {
         
         expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/1/posts/search');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('searchRelation with_trashed', async () => {
+        let result = null;
+        await UserRepository.searchRelation(1, 'posts', {
+            with_trashed: true,
+        }).then((data) => {
+            result = data;
+        });
+        
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/1/posts/search?with_trashed=true');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('searchRelation only_trashed', async () => {
+        let result = null;
+        await UserRepository.searchRelation(1, 'posts', {
+            only_trashed: true,
+        }).then((data) => {
+            result = data;
+        });
+        
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/1/posts/search?only_trashed=true');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
     

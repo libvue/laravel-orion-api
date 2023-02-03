@@ -17,11 +17,18 @@ class LaravelOrionAPI extends AxiosInstance {
         });
     }
 
-    search(data) {
+    search(data ) {
+        let url = `${this.path}/search`;
+        // For search operations we need to add the with_trashed and only_trashed to the querystring
+        if (data && data.with_trashed) {
+            url += '?with_trashed=true'
+        } else if (data && data.only_trashed) {
+            url += '?only_trashed=true'
+        }
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            url: `${this.path}/search`,
+            url,
             data: Transformer.toPostData(data),
         });
     }
@@ -102,10 +109,18 @@ class LaravelOrionAPI extends AxiosInstance {
     }
 
     searchRelation(id, relation, data) {
+        let url = `${this.path}/${id}/${relation}/search`;
+        // For search operations we need to add the with_trashed and only_trashed to the querystring
+        if (data && data.with_trashed) {
+            url += '?with_trashed=true'
+        } else if (data && data.only_trashed) {
+            url += '?only_trashed=true'
+        }
+        
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
-            url: `${this.path}/${id}/${relation}/search`,
+            url,
             data: Transformer.toPostData(data),
         });
     }
