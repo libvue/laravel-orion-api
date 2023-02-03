@@ -25,7 +25,7 @@ class BaseRepository extends LaravelOrionAPI {
     }
 }
 
-export default new BaseRepository();
+export default BaseRepository;
 ```
 
 ```js
