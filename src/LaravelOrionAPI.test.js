@@ -3,10 +3,7 @@ import UserRepository from '../test/helpers/UserRepository';
 
 describe('All methods are working properly', () => {
     test('index', async () => {
-        let result = null;
-        await UserRepository.index().then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.index();
         
         expect(result.config.method).toBe('get');
         expect(result.config.url).toBe('users/');
@@ -14,11 +11,8 @@ describe('All methods are working properly', () => {
     });
     
     test('index with_trashed', async () => {
-        let result = null;
-        await UserRepository.index({
+        const result = await UserRepository.index({
             with_trashed: true,
-        }).then((data) => {
-            result = data;
         });
         
         expect(result.config.method).toBe('get');
@@ -27,11 +21,8 @@ describe('All methods are working properly', () => {
     });
     
     test('index only_trashed', async () => {
-        let result = null;
-        await UserRepository.index({
+        const result = await UserRepository.index({
             only_trashed: true,
-        }).then((data) => {
-            result = data;
         });
         
         expect(result.config.method).toBe('get');
@@ -40,10 +31,7 @@ describe('All methods are working properly', () => {
     });
 
     test('search', async () => {
-        let result = null;
-        await UserRepository.search().then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.search();
         
         expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/search');
@@ -51,11 +39,8 @@ describe('All methods are working properly', () => {
     });
     
     test('search with_trashed', async () => {
-        let result = null;
-        await UserRepository.search({
+        const result = await UserRepository.search({
             with_trashed: true,
-        }).then((data) => {
-            result = data;
         });
         
         expect(result.config.method).toBe('post');
@@ -64,11 +49,8 @@ describe('All methods are working properly', () => {
     });
     
     test('search only_trashed', async () => {
-        let result = null;
-        await UserRepository.search({
+        const result = await UserRepository.search({
             only_trashed: true,
-        }).then((data) => {
-            result = data;
         });
         
         expect(result.config.method).toBe('post');
@@ -77,10 +59,7 @@ describe('All methods are working properly', () => {
     });
 
     test('show', async () => {
-        let result = null;
-        await UserRepository.show(1).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.show(1);
         
         expect(result.config.method).toBe('get');
         expect(result.config.url).toBe('users/1');
@@ -88,11 +67,8 @@ describe('All methods are working properly', () => {
     });
     
     test('show with_trashed', async () => {
-        let result = null;
-        await UserRepository.show(1, {
+        const result = await UserRepository.show(1, {
             with_trashed: true,
-        }).then((data) => {
-            result = data;
         });
         
         expect(result.config.method).toBe('get');
@@ -101,11 +77,8 @@ describe('All methods are working properly', () => {
     });
     
     test('show only_trashed', async () => {
-        let result = null;
-        await UserRepository.show(1, {
+        const result = await UserRepository.show(1, {
             only_trashed: true,
-        }).then((data) => {
-            result = data;
         });
         
         expect(result.config.method).toBe('get');
@@ -114,12 +87,9 @@ describe('All methods are working properly', () => {
     });
 
     test('store', async () => {
-        let result = null;
-        await UserRepository.store({
+        const result = await UserRepository.store({
             name: 'morpheus',
             job: 'leader',
-        }).then((data) => {
-            result = data;
         });
         
         expect(result.config.method).toBe('post');
@@ -128,16 +98,13 @@ describe('All methods are working properly', () => {
     });
 
     test('store multipart', async () => {
-        let result = null;
-        await UserRepository.store(
+        const result = await UserRepository.store(
             {
                 name: 'morpheus',
                 job: 'leader',
             },
             true
-        ).then((data) => {
-            result = data;
-        });
+        );
 
         expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
         expect(result.config.method).toBe('post');
@@ -146,13 +113,10 @@ describe('All methods are working properly', () => {
     });
 
     test('update', async () => {
-        let result = null;
-        await UserRepository.update(1, {
+        const result = await UserRepository.update(1, {
             name: 'morpheus',
             job: 'leader',
-        },).then((data) => {
-            result = data;
-        });
+        },);
         
         expect(result.config.method).toBe('patch');
         expect(result.config.url).toBe('users/1');
@@ -160,24 +124,25 @@ describe('All methods are working properly', () => {
     });
 
     test('destroy', async () => {
-        let result = null;
-        await UserRepository.destroy(1).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.destroy(1);
         
         expect(result.config.method).toBe('delete');
         expect(result.config.url).toBe('users/1');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
     
+    test('restore', async () => {
+        const result = await UserRepository.restore(1);
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/1/restore');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
     test('batchStore', async () => {
-        let result = null;
-        await UserRepository.batchStore([{
+        const result = await UserRepository.batchStore([{
             name: 'morpheus',
             job: 'leader',
-        }]).then((data) => {
-            result = data;
-        });
+        }]);
         
         expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/batch');
@@ -185,16 +150,13 @@ describe('All methods are working properly', () => {
     });
     
     test('batchStore multipart', async () => {
-        let result = null;
-        await UserRepository.batchStore(
+        const result = await UserRepository.batchStore(
             {
                 name: 'morpheus',
                 job: 'leader',
             },
             true
-        ).then((data) => {
-            result = data;
-        });
+        );
         
         expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
         expect(result.config.method).toBe('post');
@@ -203,13 +165,10 @@ describe('All methods are working properly', () => {
     });
     
     test('batchUpdate', async () => {
-        let result = null;
-        await UserRepository.batchUpdate({ 1: {
+        const result = await UserRepository.batchUpdate({ 1: {
             name: 'morpheus',
             job: 'leader',
-        }}).then((data) => {
-            result = data;
-        });
+        }});
         
         expect(result.config.method).toBe('patch');
         expect(result.config.url).toBe('users/batch');
@@ -217,10 +176,7 @@ describe('All methods are working properly', () => {
     });
     
     test('batchDestroy', async () => {
-        let result = null;
-        await UserRepository.batchDestroy([1,2,3]).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.batchDestroy([1,2,3]);
         
         expect(result.config.method).toBe('delete');
         expect(result.config.url).toBe('users/batch');
@@ -228,10 +184,7 @@ describe('All methods are working properly', () => {
     });
     
     test('indexRelation', async () => {
-        let result = null;
-        await UserRepository.indexRelation(1, 'posts').then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.indexRelation(1, 'posts');
         
         expect(result.config.method).toBe('get');
         expect(result.config.url).toBe('users/1/posts');
@@ -239,10 +192,7 @@ describe('All methods are working properly', () => {
     });
     
     test('searchRelation', async () => {
-        let result = null;
-        await UserRepository.searchRelation(1, 'posts').then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.searchRelation(1, 'posts');
         
         expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/1/posts/search');
@@ -250,11 +200,8 @@ describe('All methods are working properly', () => {
     });
     
     test('searchRelation with_trashed', async () => {
-        let result = null;
-        await UserRepository.searchRelation(1, 'posts', {
+        const result = await UserRepository.searchRelation(1, 'posts', {
             with_trashed: true,
-        }).then((data) => {
-            result = data;
         });
         
         expect(result.config.method).toBe('post');
@@ -263,11 +210,8 @@ describe('All methods are working properly', () => {
     });
     
     test('searchRelation only_trashed', async () => {
-        let result = null;
-        await UserRepository.searchRelation(1, 'posts', {
+        const result = await UserRepository.searchRelation(1, 'posts', {
             only_trashed: true,
-        }).then((data) => {
-            result = data;
         });
         
         expect(result.config.method).toBe('post');
@@ -276,10 +220,7 @@ describe('All methods are working properly', () => {
     });
     
     test('showRelation', async () => {
-        let result = null;
-        await UserRepository.showRelation(1, 'posts', 1).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.showRelation(1, 'posts', 1);
         
         expect(result.config.method).toBe('get');
         expect(result.config.url).toBe('users/1/posts/1');
@@ -287,10 +228,7 @@ describe('All methods are working properly', () => {
     });
     
     test('storeRelation', async () => {
-        let result = null;
-        await UserRepository.storeRelation(1, 'posts', {}).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.storeRelation(1, 'posts', {});
         
         expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/1/posts');
@@ -298,8 +236,7 @@ describe('All methods are working properly', () => {
     });
     
     test('storeRelation multipart', async () => {
-        let result = null;
-        await UserRepository.storeRelation(
+        const result = await UserRepository.storeRelation(
             1,
             'posts',
             {
@@ -307,9 +244,7 @@ describe('All methods are working properly', () => {
                 job: 'leader',
             },
             true
-        ).then((data) => {
-            result = data;
-        });
+        );
         
         expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
         expect(result.config.method).toBe('post');
@@ -318,10 +253,7 @@ describe('All methods are working properly', () => {
     });
     
     test('updateRelation', async () => {
-        let result = null;
-        await UserRepository.updateRelation(1, 'posts', 1, {}).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.updateRelation(1, 'posts', 1, {});
         
         expect(result.config.method).toBe('patch');
         expect(result.config.url).toBe('users/1/posts/1');
@@ -329,10 +261,7 @@ describe('All methods are working properly', () => {
     });
     
     test('destroyRelation', async () => {
-        let result = null;
-        await UserRepository.destroyRelation(1, 'posts', 1).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.destroyRelation(1, 'posts', 1);
         
         expect(result.config.method).toBe('delete');
         expect(result.config.url).toBe('users/1/posts/1');
@@ -340,10 +269,7 @@ describe('All methods are working properly', () => {
     });
     
     test('restoreRelation', async () => {
-        let result = null;
-        await UserRepository.restoreRelation(1, 'posts', 1).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.restoreRelation(1, 'posts', 1);
         
         expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/1/posts/1/restore');
@@ -351,10 +277,7 @@ describe('All methods are working properly', () => {
     });
     
     test('batchStoreRelation', async () => {
-        let result = null;
-        await UserRepository.batchStoreRelation(1, 'posts', []).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.batchStoreRelation(1, 'posts', []);
         
         expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/1/posts/batch');
@@ -362,15 +285,12 @@ describe('All methods are working properly', () => {
     });
     
     test('batchStoreRelation multipart', async () => {
-        let result = null;
-        await UserRepository.batchStoreRelation(
+        const result = await UserRepository.batchStoreRelation(
             1,
             'posts',
             [],
             true
-        ).then((data) => {
-            result = data;
-        });
+        );
         
         expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
         expect(result.config.method).toBe('post');
@@ -379,10 +299,7 @@ describe('All methods are working properly', () => {
     });
     
     test('batchUpdateRelation', async () => {
-        let result = null;
-        await UserRepository.batchUpdateRelation(1, 'posts', []).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.batchUpdateRelation(1, 'posts', []);
         
         expect(result.config.method).toBe('patch');
         expect(result.config.url).toBe('users/1/posts/batch');
@@ -390,10 +307,7 @@ describe('All methods are working properly', () => {
     });
     
     test('batchDestroyRelation', async () => {
-        let result = null;
-        await UserRepository.batchDestroyRelation(1, 'posts', []).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.batchDestroyRelation(1, 'posts', []);
         
         expect(result.config.method).toBe('delete');
         expect(result.config.url).toBe('users/1/posts/batch');
@@ -401,10 +315,7 @@ describe('All methods are working properly', () => {
     });
     
     test('batchRestoreRelation', async () => {
-        let result = null;
-        await UserRepository.batchRestoreRelation(1, 'posts').then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.batchRestoreRelation(1, 'posts');
         
         expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/1/posts/batch/restore');
@@ -412,10 +323,7 @@ describe('All methods are working properly', () => {
     });
     
     test('sync', async () => {
-        let result = null;
-        await UserRepository.sync(1, 'posts', {}).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.sync(1, 'posts', {});
         
         expect(result.config.method).toBe('patch');
         expect(result.config.url).toBe('users/1/posts/sync');
@@ -423,10 +331,7 @@ describe('All methods are working properly', () => {
     });
     
     test('toggle', async () => {
-        let result = null;
-        await UserRepository.toggle(1, 'posts', {}).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.toggle(1, 'posts', {});
         
         expect(result.config.method).toBe('patch');
         expect(result.config.url).toBe('users/1/posts/toggle');
@@ -434,10 +339,7 @@ describe('All methods are working properly', () => {
     });
     
     test('attach', async () => {
-        let result = null;
-        await UserRepository.attach(1, 'posts', {}).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.attach(1, 'posts', {});
         
         expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/1/posts/attach');
@@ -445,10 +347,7 @@ describe('All methods are working properly', () => {
     });
     
     test('detach', async () => {
-        let result = null;
-        await UserRepository.detach(1, 'posts', {}).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.detach(1, 'posts', {});
         
         expect(result.config.method).toBe('delete');
         expect(result.config.url).toBe('users/1/posts/detach');
@@ -456,10 +355,7 @@ describe('All methods are working properly', () => {
     });
     
     test('pivot', async () => {
-        let result = null;
-        await UserRepository.pivot(1, 'posts', 1, {}).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.pivot(1, 'posts', 1, {});
         
         expect(result.config.method).toBe('patch');
         expect(result.config.url).toBe('users/1/posts/1/pivot');
@@ -467,20 +363,14 @@ describe('All methods are working properly', () => {
     });
     
     test('associate', async () => {
-        let result = null;
-        await UserRepository.associate(1, 'posts', 1).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.associate(1, 'posts', 1);
         expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/1/posts/associate');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
     
     test('dissociate', async () => {
-        let result = null;
-        await UserRepository.dissociate(1, 'posts', 1).then((data) => {
-            result = data;
-        });
+        const result = await UserRepository.dissociate(1, 'posts', 1);
         expect(result.config.method).toBe('delete');
         expect(result.config.url).toBe('users/1/posts/1/dissociate');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
