@@ -34,6 +34,8 @@ const restHandlers = [
     rest.patch('https://endpoint.example/api/users/1',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
     // Destroy
     rest.delete('https://endpoint.example/api/users/1',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
+    // Restore
+    rest.post('https://endpoint.example/api/users/1/restore',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
     // Batch Store
     rest.post('https://endpoint.example/api/users/batch',  (req, res, ctx) => res(ctx.status(201), ctx.json(posts))),
     // Batch Update

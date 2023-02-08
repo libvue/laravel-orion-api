@@ -71,6 +71,14 @@ class LaravelOrionAPI extends AxiosInstance {
             url: `${this.path}/${id}`,
         });
     }
+    
+    restore(id) {
+        return this.axios({
+            method: 'POST',
+            baseURL: this.baseURL,
+            url: `${this.path}/${id}/restore`,
+        });
+    }
 
     batchStore(data, multipart = false) {
         return this.axios({
