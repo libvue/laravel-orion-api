@@ -62,6 +62,7 @@ PostRepository.search({ limit: 10, sort: "-id" }).then((data) => {
 | show                 | GET             | id, data                                  | includes, aggregates                                     |
 | update               | PATCH or POST   | id, data, multipart                       | -                                                        |
 | destroy              | DELETE          | id                                        | -                                                        |
+| restore              | POST            | id                                        | -                                                        |
 | batchStore           | POST            | data, multipart                           | -                                                        |
 | batchUpdate          | PATCH or POST   | data                                      | -                                                        |
 | batchDestroy         | DELETE          | data                                      | -                                                        |
