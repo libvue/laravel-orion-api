@@ -17,7 +17,7 @@ class LaravelOrionAPI extends AxiosInstance {
         });
     }
 
-    search(data ) {
+    search(data) {
         let url = `${this.path}/search`;
         // For search operations we need to add the with_trashed and only_trashed to the querystring
         if (data && data.with_trashed) {
