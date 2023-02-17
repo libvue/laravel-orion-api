@@ -10,7 +10,11 @@ class LaravelOrionAPI extends AxiosInstance {
         this.autoAbort = true;
         this._abortControllers = {};
     }
-
+    
+    static make() {
+        return new this();
+    }
+    
     index(data) {
         return this.axios({
             method: 'GET',

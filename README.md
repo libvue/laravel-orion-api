@@ -13,7 +13,7 @@
 ```
 
 ## Setup
-#### Create a BaseRepository
+### Create a BaseRepository
 ```js
 // BaseRepository.js
 import { LaravelOrionAPI } from "@libvue/laravel-orion-api";
@@ -29,7 +29,7 @@ class BaseRepository extends LaravelOrionAPI {
 
 export default BaseRepository;
 ```
-#### Extend from this BaseRepository
+### Extend from this BaseRepository
 ```js
 // PostRepository.js
 import BaseRepository from "./BaseRepository.js";
@@ -41,12 +41,34 @@ class PostRepository extends BaseRepository {
     }
 }
 
-export default new PostRepository();
+export default PostRepository;
 ```
-#### Use it!
+### Use it in different styles
+#### By Creating an Instance
 ```js
 // app.js
 import PostRepository from "PostRepository.js";
+const PostRepositoryInstance = new PostRepository();
+
+// Search some posts
+PostRepositoryInstance.search({ limit: 10, sort: "-id" }).then((data) => {
+    console.log(data);
+});
+```
+#### By using a builder function
+```js
+// app.js
+import PostRepository from "PostRepository.js";
+
+// Search some posts
+PostRepository.make().search({ limit: 10, sort: "-id" }).then((data) => {
+    console.log(data);
+});
+```
+#### By Importing an instance
+```js
+// app.js
+import PostRepository from "PostRepository.js"; // Should use `export default new PostRepository()`;
 
 // Search some posts
 PostRepository.search({ limit: 10, sort: "-id" }).then((data) => {
@@ -93,12 +115,13 @@ PostRepository.search({ limit: 10, sort: "-id" }).then((data) => {
 | pivot                | PATCH              | id, relation, relationId, data            | -                                                        |
 | associate            | POST               | id, relation, relatedKey                  | -                                                        |
 | dissociate           | DELETE             | id, relation, relationId                  | -                                                        |
-| abort                | -                  | id                                        | -                                                        |      
+| abort                | -                  | methodName OR custom id                   | -                                                        |      
 
 ## Helper Methods
 
 | **instance method** | description                                                                                               |
 |:--------------------|-----------------------------------------------------------------------------------------------------------|
+| make                | A builder function if you need to create an instance in the chain                                         |
 | withoutAutoAbort    | If the instance has autoAbort enabled, you can disable this effect for methods that use this in the chain |
 | withAutoAbort       | If the instance has autoAbort disabled, you can enable this effect for methods that use this in the chain |
 | withAbortId         | Changes the default abort id (method name), so you can use Instance.abort(abortId) more precise.          |
@@ -111,16 +134,18 @@ By default autoAbort is set to `true` for the entire instance.
 
 #### Example:
 ```javascript
+const UserRepositoryInstance = new UserRepository();
+
 // First Call
-UserRepository.index().catch((e) => {
+UserRepositoryInstance.index().catch((e) => {
     console.log(e.code);                    // ERR_CANCELED
 });
 // Second call 
-UserRepository.index().catch((e) => {
+UserRepositoryInstance.index().catch((e) => {
     console.log(e.code);                    // ERR_CANCELED
 });
 // Third Call 
-UserRepository.index().then((result) => {
+UserRepositoryInstance.index().then((result) => {
     console.log(result.status);             // 200
 });
 ```
@@ -138,16 +163,18 @@ class UserRepository extends LaravelOrionAPI {
 }
 ```
 ```javascript
+const UserRepositoryInstance = new UserRepository();
+
 // First Call 
-UserRepository.index().then((result) => {
+UserRepositoryInstance.index().then((result) => {
     console.log(result.status)                // 200
 });
 // Second call 
-UserRepository.index().then((result) => {
+UserRepositoryInstance.index().then((result) => {
     console.log(result.status)                // 200
 });
 // Third Call 
-UserRepository.index().then((result) => {
+UserRepositoryInstance.index().then((result) => {
     console.log(result.status)                // 200
 });
 ```
@@ -156,16 +183,18 @@ UserRepository.index().then((result) => {
 ### Disable autoAbort for a single method
 #### Example:
 ```javascript
+const UserRepositoryInstance = new UserRepository();
+
 // First Call
-UserRepository.withoutAutoAbort().index().then((result) => {
+UserRepositoryInstance.withoutAutoAbort().index().then((result) => {
     console.log(result.status);             // 200
 });
 // Second call 
-UserRepository.withoutAutoAbort().index().then((result) => {
+UserRepositoryInstance.withoutAutoAbort().index().then((result) => {
     console.log(result.status);             // 200
 });
 // Third Call 
-UserRepository.withoutAutoAbort().index().then((result) => {
+UserRepositoryInstance.withoutAutoAbort().index().then((result) => {
     console.log(result.status);             // 200
 });
 ```
@@ -175,19 +204,21 @@ UserRepository.withoutAutoAbort().index().then((result) => {
 
 ```javascript
 // First Call
-UserRepository.withoutAutoAbort().index().then((result) => {
+const UserRepositoryInstance = new UserRepository();
+
+UserRepositoryInstance.withoutAutoAbort().index().then((result) => {
     console.log(result.status);             // 200
 });
 // Second call 
-UserRepository.withoutAutoAbort().index().then((result) => {
+UserRepositoryInstance.withoutAutoAbort().index().then((result) => {
     console.log(result.status);             // 200
 });
 // Third Call 
-UserRepository.withAbortId('other-purpose').index().catch((e) => {
+UserRepositoryInstance.withAbortId('other-purpose').index().catch((e) => {
     console.log(e.code);                    // ERR_CANCELED 
 });
 // Fourth Call 
-UserRepository.withAbortId('other-purpose').index().then((result) => {
+UserRepositoryInstance.withAbortId('other-purpose').index().then((result) => {
     console.log(result.status);             // 200 
 });
 ```

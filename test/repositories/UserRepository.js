@@ -8,4 +8,4 @@ class UserRepository extends LaravelOrionAPI {
     }
 }
 
-export default new UserRepository();
+export default UserRepository;
