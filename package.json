@@ -15,6 +15,7 @@
         "test": "vitest",
         "coverage": "vitest run --coverage"
     },
+    "type": "module",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/libvue/laravel-orion-api/issues"
