@@ -1,19 +1,32 @@
-import AxiosInstance from './modules/AxiosInstance';
-import Transformer from './modules/Transformer/Transformer';
-import AXIOS_CONFIG from './configs/axios';
+import AxiosInstance from './modules/AxiosInstance.js';
+import Transformer from './modules/Transformer/Transformer.js';
+import AXIOS_CONFIG from './configs/axios.js';
 
 class LaravelOrionAPI extends AxiosInstance {
     constructor(AxiosConfig = AXIOS_CONFIG) {
         super(AxiosConfig);
         this.baseURL = '/';
         this.path = '';
+        this.abortControllers = {};
+        this.autoAbort = true;
     }
-
+    
     index(data) {
+        // Auto abort if autoAbort is true and no abortId was set
+        if (this.autoAbort && this.abortControllers.index && !this.abortId) {
+            this.abort('index');
+        } else if (this.autoAbort && this.abortId && this.abortControllers[this.abortId]) {
+            this.abort(this.abortId);
+        }
+        // Create abort controller and store it in this instance
+        const abortController = new AbortController();
+        this.abortControllers[this.abortId || 'index'] = abortController;
+        
         return this.axios({
             method: 'GET',
             baseURL: this.baseURL,
             url: `${this.path}${Transformer.toGetQuery(data)}`,
+            signal: abortController.signal,
         });
     }
 
@@ -283,6 +296,46 @@ class LaravelOrionAPI extends AxiosInstance {
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/${relationId}/dissociate`,
         });
+    }
+    
+    abort(method) {
+        if(this.abortControllers[method]) {
+            this.abortControllers[method].abort();
+            delete this.abortControllers[method];
+        }
+    }
+    
+    withAutoAbort() {
+        // Create a clone of this class
+        // https://stackoverflow.com/a/44782052
+        const clonedThis = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+        // Append autoAbort to this chain
+        clonedThis.autoAbort = true;
+        // Return appended 'this'
+        return clonedThis;
+    }
+    
+    withoutAutoAbort() {
+        // Create a clone of this class
+        // https://stackoverflow.com/a/44782052
+        const clonedThis = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+        // Append autoAbort to this chain
+        clonedThis.autoAbort = false;
+        // Return appended 'this'
+        return clonedThis;
+    }
+    
+    withAbortId(id) {
+        if(!id) {
+            throw new Error('No abort ID declared')
+        }
+        // Create a clone of this class
+        // https://stackoverflow.com/a/44782052
+        const clonedThis = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+        // Append autoAbort to this chain
+        clonedThis.abortId = id;
+        // Return appended 'this'
+        return clonedThis;
     }
 }
 
