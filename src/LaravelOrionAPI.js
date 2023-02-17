@@ -51,12 +51,12 @@ class LaravelOrionAPI extends AxiosInstance {
         });
     }
 
-    update(id, data, multipart) {
+    update(id, data, multipart, method = 'PATCH') {
         if (multipart) {
-            data.append('_method', 'PATCH');
+            data.append('_method', method);
         }
         return this.axios({
-            method: multipart ? 'POST' : 'PATCH',
+            method: multipart ? 'POST' : method,
             baseURL: this.baseURL,
             ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             url: `${this.path}/${id}`,
