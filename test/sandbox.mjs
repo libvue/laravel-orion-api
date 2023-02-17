@@ -7,20 +7,27 @@ const UserRepositoryInstance = new UserRepository();
  */
 
 // First Call
-UserRepositoryInstance.withoutAutoAbort().index().then((result) => {
-    console.log(result.status);             // 200
+UserRepositoryInstance.index().then((response) => {
+    console.log(response.status)
+}).catch((e) => {
+    console.log(e.code);
 });
 // Second call
-UserRepositoryInstance.withoutAutoAbort().index().then((result) => {
-    console.log(result.status);             // 200
+UserRepositoryInstance.index().then((response) => {
+    console.log(response.status)
+}).catch((e) => {
+    console.log(e.code);
 });
 // Third Call
-UserRepositoryInstance.withAbortId('other-purpose').index().catch((e) => {
-    console.log(e.code);                    // ERR_CANCELED
+UserRepositoryInstance.index().then((response) => {
+    console.log(response.status);
+}).catch((e) => {
+    console.log(e.code);
 });
 // Fourth Call
-UserRepositoryInstance.withAbortId('other-purpose').index().then((result) => {
-    console.log(result.status);             // 200
+UserRepositoryInstance.withAbortId('other-purpose').index().then((response) => {
+    console.log(response.status);
+}).catch((e) => {
+    console.log(e.code);
 });
-
 //UserRepository.abort('hello');
