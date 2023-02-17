@@ -11,6 +11,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-underscore-dangle": 0,
         "indent": ["error", 4],
         "import/extensions": ["error", "ignorePackages", { "js": "always", "vue": "always", "ts": "always" }]
     },
