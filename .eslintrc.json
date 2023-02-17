@@ -1,25 +1,19 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "root": true,
-  "extends": [
-    "airbnb-base",
-    "prettier"
-  ],
-  "overrides": [],
-  "parserOptions": {
-    "ecmaVersion": 2021,
-    "sourceType": "module"
-  },
-  "rules": {
-    "indent": [
-      "error",
-      4
-    ]
-  },
-  "plugins": [
-    "prettier"
-  ]
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "root": true,
+    "extends": ["airbnb-base", "prettier"],
+    "overrides": [],
+    "parserOptions": {
+        "ecmaVersion": 2022,
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-underscore-dangle": 0,
+        "indent": ["error", 4],
+        "import/extensions": ["error", "ignorePackages", { "js": "always", "vue": "always", "ts": "always" }]
+    },
+    "plugins": ["prettier"]
 }

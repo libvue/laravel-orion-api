@@ -1,4 +1,4 @@
-import LaravelOrionAPI from "../../src/LaravelOrionAPI";
+import LaravelOrionAPI from "../../src/LaravelOrionAPI.js";
 
 class UserRepository extends LaravelOrionAPI {
     constructor() {

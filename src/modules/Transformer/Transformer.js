@@ -1,6 +1,6 @@
-import REQUEST_CONFIG from '../../configs/request';
-import PostParsers from './parsers/PostParsers';
-import GetParsers from "./parsers/GetParsers";
+import REQUEST_CONFIG from '../../configs/request.js';
+import PostParsers from './parsers/PostParsers.js';
+import GetParsers from "./parsers/GetParsers.js";
 
 const DEFAULT_POST_CONFIG = REQUEST_CONFIG.post;
 const DEFAULT_GET_CONFIG = REQUEST_CONFIG.get;

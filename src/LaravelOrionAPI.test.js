@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import UserRepository from '../test/helpers/UserRepository';
+import UserRepository from '../test/repositories/UserRepository';
 
 describe('All methods are working properly', () => {
     test('index', async () => {
