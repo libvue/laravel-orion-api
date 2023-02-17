@@ -11,23 +11,11 @@ export default class PostParsers {
         }
         return value;
     }
-
+    
     static parseFilters(value) {
-        // We assume here we get a proper array, we only need to filter out the undefined/null values
-        const clonedValue = [...value];
-        clonedValue.forEach((obj, index) => {
-            // Check if the value should be removed
-            if (typeof obj.value === 'undefined') {
-                clonedValue.splice(index, 1);
-            } else {
-                // We can keep the value, but we must ensure the type!
-                // eslint-disable-next-line no-param-reassign
-                obj.value = obj.value;
-            }
-        });
-        return clonedValue;
+        return structuredClone(value).filter((obj) => typeof obj.value !== 'undefined');
     }
-
+    
     static parseSearch(value) {
         if (typeof value === 'string' && value !== '') {
             return {
