@@ -6,7 +6,7 @@ describe('All methods are working properly', () => {
         const result = await UserRepository.index();
         
         expect(result.config.method).toBe('get');
-        expect(result.config.url).toBe('users/');
+        expect(result.config.url).toBe('users');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
     
@@ -16,7 +16,7 @@ describe('All methods are working properly', () => {
         });
         
         expect(result.config.method).toBe('get');
-        expect(result.config.url).toBe('users/?with_trashed=true');
+        expect(result.config.url).toBe('users?with_trashed=true');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
     
@@ -26,7 +26,7 @@ describe('All methods are working properly', () => {
         });
         
         expect(result.config.method).toBe('get');
-        expect(result.config.url).toBe('users/?only_trashed=true');
+        expect(result.config.url).toBe('users?only_trashed=true');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
 

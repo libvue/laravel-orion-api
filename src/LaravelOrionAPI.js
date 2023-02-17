@@ -13,7 +13,7 @@ class LaravelOrionAPI extends AxiosInstance {
         return this.axios({
             method: 'GET',
             baseURL: this.baseURL,
-            url: `${this.path}/${Transformer.toGetQuery(data)}`,
+            url: `${this.path}${Transformer.toGetQuery(data)}`,
         });
     }
 
