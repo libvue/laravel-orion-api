@@ -32,6 +32,8 @@ const restHandlers = [
     rest.post('https://endpoint.example/api/users',  (req, res, ctx) => res(ctx.status(201), ctx.json(posts))),
     // Update
     rest.patch('https://endpoint.example/api/users/1',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
+    // Update multipart
+    rest.post('https://endpoint.example/api/users/1',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
     // Destroy
     rest.delete('https://endpoint.example/api/users/1',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
     // Restore
@@ -52,6 +54,8 @@ const restHandlers = [
     rest.post('https://endpoint.example/api/users/1/posts',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
     // Update Relation
     rest.patch('https://endpoint.example/api/users/1/posts/1',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
+    // Update Relation Multipart
+    rest.post('https://endpoint.example/api/users/1/posts/1',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
     // Destroy Relation
     rest.delete('https://endpoint.example/api/users/1/posts/1',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
     // Restore Relation

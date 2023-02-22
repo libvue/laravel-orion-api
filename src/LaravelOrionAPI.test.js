@@ -124,6 +124,24 @@ describe('All methods are working properly', () => {
         expect(result.config.url).toBe('users/1');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
+    
+    test('update multipart with formData', async () => {
+        const result = await UserRepository.make().update(1, new FormData(), true);
+        
+        expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/1');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('update multipart with object', async () => {
+        const result = await UserRepository.make().update(1, {}, true);
+        
+        expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/1');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
 
     test('destroy', async () => {
         const result = await UserRepository.make().destroy(1);
@@ -173,6 +191,24 @@ describe('All methods are working properly', () => {
         }});
         
         expect(result.config.method).toBe('patch');
+        expect(result.config.url).toBe('users/batch');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('batchUpdate multipart with formData', async () => {
+        const result = await UserRepository.make().batchUpdate(new FormData(), true);
+        
+        expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/batch');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('batchUpdate multipart with object', async () => {
+        const result = await UserRepository.make().batchUpdate({}, true);
+        
+        expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
+        expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/batch');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
@@ -262,6 +298,25 @@ describe('All methods are working properly', () => {
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
     
+    test('updateRelation multipart with formData', async () => {
+        const formData = new FormData();
+        const result = await UserRepository.make().updateRelation(1, 'posts', 1, formData, true);
+        
+        expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/1/posts/1');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('updateRelation multipart with object', async () => {
+        const result = await UserRepository.make().updateRelation(1, 'posts', 1, {}, true);
+        
+        expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/1/posts/1');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
     test('destroyRelation', async () => {
         const result = await UserRepository.make().destroyRelation(1, 'posts', 1);
         
@@ -301,9 +356,27 @@ describe('All methods are working properly', () => {
     });
     
     test('batchUpdateRelation', async () => {
-        const result = await UserRepository.make().batchUpdateRelation(1, 'posts', []);
+        const result = await UserRepository.make().batchUpdateRelation(1, 'posts', {});
         
         expect(result.config.method).toBe('patch');
+        expect(result.config.url).toBe('users/1/posts/batch');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('batchUpdateRelation multipart with formData', async () => {
+        const result = await UserRepository.make().batchUpdateRelation(1, 'posts', new FormData(), true);
+    
+        expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/1/posts/batch');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('batchUpdateRelation multipart with object', async () => {
+        const result = await UserRepository.make().batchUpdateRelation(1, 'posts', {}, true);
+        
+        expect(result.config.headers['Content-Type'].startsWith('multipart/form-data')).toBe(true);
+        expect(result.config.method).toBe('post');
         expect(result.config.url).toBe('users/1/posts/batch');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
@@ -376,5 +449,75 @@ describe('All methods are working properly', () => {
         expect(result.config.method).toBe('delete');
         expect(result.config.url).toBe('users/1/posts/1/dissociate');
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('autoAbort', async () => {
+        const instance = UserRepository.make();
+        
+        const results = await Promise.all([
+            instance.index().catch((e) => e.code),
+            instance.index(),
+        ])
+        
+        expect(results[0]).toBe('ERR_CANCELED');
+        
+        expect(results[1].config.method).toBe('get');
+        expect(results[1].config.url).toBe('users');
+        expect(results[1].config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('withoutAutoAbort', async () => {
+        const instance = UserRepository.make();
+        
+        const results = await Promise.all([
+            instance.withoutAutoAbort().index(),
+            instance.withoutAutoAbort().index(),
+        ])
+    
+        expect(results[0].config.method).toBe('get');
+        expect(results[0].config.url).toBe('users');
+        expect(results[0].config.xsrfCookieName).toBe('XSRF-TOKEN');
+        
+        expect(results[1].config.method).toBe('get');
+        expect(results[1].config.url).toBe('users');
+        expect(results[1].config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('withAutoAbort', async () => {
+        // Create an instance withoutAutoAbort
+        const instance = UserRepository.make().withoutAutoAbort();
+        
+        const results = await Promise.all([
+            instance.withAutoAbort().index().catch((e) => e.code),
+            instance.withAutoAbort().index(),
+        ])
+    
+        expect(results[0]).toBe('ERR_CANCELED');
+        
+        expect(results[1].config.method).toBe('get');
+        expect(results[1].config.url).toBe('users');
+        expect(results[1].config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('withAbortId', async () => {
+        // Create an instance withoutAutoAbort
+        const instance = UserRepository.make();
+    
+        const results = await Promise.all([
+            instance.withAbortId('test').index().catch((e) => e.code),
+            instance.withAbortId('test').index(),
+        ])
+    
+        expect(results[0]).toBe('ERR_CANCELED');
+    
+        expect(results[1].config.method).toBe('get');
+        expect(results[1].config.url).toBe('users');
+        expect(results[1].config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
+    test('withAbortId without ID', async () => {
+        // Create an instance withoutAutoAbort
+        const instance = UserRepository.make();
+        expect(() => instance.withAbortId()).toThrowError();
     });
 });

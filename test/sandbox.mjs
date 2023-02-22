@@ -7,19 +7,19 @@ const UserRepositoryInstance = new UserRepository();
  */
 
 // First Call
-UserRepositoryInstance.index().then((response) => {
+UserRepositoryInstance.withoutAutoAbort().index().then((response) => {
     console.log(response.status)
 }).catch((e) => {
     console.log(e.code);
 });
 // Second call
-UserRepositoryInstance.index().then((response) => {
+UserRepositoryInstance.withoutAutoAbort().index().then((response) => {
     console.log(response.status)
 }).catch((e) => {
     console.log(e.code);
 });
 // Third Call
-UserRepositoryInstance.index().then((response) => {
+UserRepositoryInstance.withoutAutoAbort().index().then((response) => {
     console.log(response.status);
 }).catch((e) => {
     console.log(e.code);

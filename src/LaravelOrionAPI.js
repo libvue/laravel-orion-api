@@ -62,9 +62,13 @@ class LaravelOrionAPI extends AxiosInstance {
     }
 
     update(id, data, multipart, method = 'PATCH') {
-        if (multipart) {
-            data.append('_method', method);
+        if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
+            data.append('_method', 'PATCH');
+        } else if (multipart && typeof data === 'object') {
+            // eslint-disable-next-line no-param-reassign
+            data._method = 'PATCH';
         }
+        
         return this.axios({
             method: multipart ? 'POST' : method,
             baseURL: this.baseURL,
@@ -104,10 +108,18 @@ class LaravelOrionAPI extends AxiosInstance {
         });
     }
 
-    batchUpdate(data) {
+    batchUpdate(data, multipart = false) {
+        if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
+            data.append('_method', 'PATCH');
+        } else if (multipart && typeof data === 'object') {
+            // eslint-disable-next-line no-param-reassign
+            data._method = 'PATCH';
+        }
+        
         return this.axios({
-            method: 'PATCH',
+            method: multipart ? 'POST' : 'PATCH',
             baseURL: this.baseURL,
+            ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             url: `${this.path}/batch`,
             data,
             signal: this._injectAbort('batchUpdate', this.autoAbort, this.abortId),
@@ -172,9 +184,13 @@ class LaravelOrionAPI extends AxiosInstance {
     }
 
     updateRelation(id, relation, relationId, data, multipart) {
-        if (multipart) {
+        if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
             data.append('_method', 'PATCH');
+        } else if (multipart && typeof data === 'object') {
+            // eslint-disable-next-line no-param-reassign
+            data._method = 'PATCH';
         }
+        
         return this.axios({
             method: multipart ? 'POST' : 'PATCH',
             baseURL: this.baseURL,
@@ -215,9 +231,13 @@ class LaravelOrionAPI extends AxiosInstance {
     }
 
     batchUpdateRelation(id, relation, data, multipart) {
-        if (multipart) {
+        if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
             data.append('_method', 'PATCH');
+        } else if (multipart && typeof data === 'object') {
+            // eslint-disable-next-line no-param-reassign
+            data._method = 'PATCH';
         }
+        
         return this.axios({
             method: multipart ? 'POST' : 'PATCH',
             baseURL: this.baseURL,

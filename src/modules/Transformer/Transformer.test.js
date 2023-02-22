@@ -1,5 +1,5 @@
 import { expect, test, describe } from 'vitest';
-import Transformer from './Transformer';
+import Transformer from './Transformer.js';
 
 describe('The toPostData method of the Transformer class works properly.', () => {
     test('defaults', () => {
@@ -19,6 +19,12 @@ describe('The toPostData method of the Transformer class works properly.', () =>
             sort: '-id',
         })).toStrictEqual(
             { page: 1, limit: 20, sort: [{ field: 'id', direction: 'desc' }] }
+        );
+    
+        expect(Transformer.toPostData({
+            sort: 'id',
+        })).toStrictEqual(
+            { page: 1, limit: 20, sort: [{ field: 'id', direction: 'asc' }] }
         );
         
         expect(Transformer.toPostData({
