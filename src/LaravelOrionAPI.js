@@ -11,10 +11,24 @@ class LaravelOrionAPI extends AxiosInstance {
         this._abortControllers = {};
     }
     
+    /**
+     * @description A builder function that returns a new instance
+     * @returns {LaravelOrionAPI}   An instance of itself
+     */
     static make() {
         return new this();
     }
     
+    
+    /**
+     * @description GET request to get a resource collection.
+     * @param {Object} data                                 The payload of the XHR request
+         * @param {String[]} data.includes                  An array of comma seperated strings
+         * @param {Object[]} data.aggregates                An array of objects
+            * @param {String} data.aggregates[].type        Type of the aggregate. F.e. count, sum, min, max, avg, exists
+            * @param {String} data.aggregates[].relation    Relation of the aggregate.
+     * @returns {AxiosPromise}                              An AxiosPromise
+     */
     index(data) {
         return this.axios({
             method: 'GET',
@@ -23,7 +37,19 @@ class LaravelOrionAPI extends AxiosInstance {
             signal: this._injectAbort('index', this.autoAbort, this.abortId),
         });
     }
-
+    
+    /**
+     * @description POST request to get a resource collection.
+     * @param {Object} data                                 The payload of the XHR request
+         * @param {Boolean} data.with_trashed               If resource has softDeletes, you get a collection with trashed items
+         * @param {Boolean} data.only_trashed               If resource has softDeletes, you get a collection with only trashed items
+         * @param {Object[]} data.includes                  An array filled with include objects
+            * @param {String} data.includes[].relation      Relation of the include.
+         * @param {Object[]} data.aggregates                An array of objects
+            * @param {String} data.aggregates[].type        Type of the aggregate. F.e. count, sum, min, max, avg, exists
+            * @param {String} data.aggregates[].relation    Relation of the aggregate.
+     * @returns {AxiosPromise}                              An AxiosPromise
+     */
     search(data) {
         let url = `${this.path}/search`;
         // For search operations we need to add the with_trashed and only_trashed to the querystring
