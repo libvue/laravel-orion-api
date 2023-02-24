@@ -224,7 +224,24 @@ class LaravelOrionAPI extends AxiosInstance {
             baseURL: this.baseURL,
             url: `${this.path}/batch`,
             data,
-            signal: this._injectAbort('batchDestroy', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'batchDestroy', this.autoAbort),
+        });
+    }
+
+    /**
+     * Batch restore multiple resource items.
+     *
+     * @param   {Object}       data           The payload of the XHR request
+     * @param   {Number[]}     data.resources A comma separated list of resources items that need to be destroyed
+     * @returns {AxiosPromise}                An AxiosPromise
+     */
+    batchRestore(data) {
+        return this.axios({
+            method: 'POST',
+            baseURL: this.baseURL,
+            url: `${this.path}/batch/restore`,
+            data,
+            signal: this._injectAbort(this.abortId || 'batchRestore', this.autoAbort),
         });
     }
 

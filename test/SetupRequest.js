@@ -44,6 +44,8 @@ const restHandlers = [
     rest.patch('https://endpoint.example/api/users/batch',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
     // Batch Destroy
     rest.delete('https://endpoint.example/api/users/batch',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
+    // Batch Restore
+    rest.post('https://endpoint.example/api/users/batch/restore',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
     // Index Relation
     rest.get('https://endpoint.example/api/users/1/posts',  (req, res, ctx) => res(ctx.status(200), ctx.json(posts))),
     // Search Relation

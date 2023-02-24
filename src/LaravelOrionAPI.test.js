@@ -221,6 +221,14 @@ describe('All methods are working properly', () => {
         expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
     });
     
+    test('batchRestore', async () => {
+        const result = await UserRepository.make().batchRestore([1,2,3]);
+        
+        expect(result.config.method).toBe('post');
+        expect(result.config.url).toBe('users/batch/restore');
+        expect(result.config.xsrfCookieName).toBe('XSRF-TOKEN');
+    });
+    
     test('indexRelation', async () => {
         const result = await UserRepository.make().indexRelation(1, 'posts');
         
