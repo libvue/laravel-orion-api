@@ -12,20 +12,22 @@ class LaravelOrionAPI extends AxiosInstance {
     }
 
     /**
-     * @description A builder function that returns a new instance
-     * @returns {LaravelOrionAPI}   An instance of itself
+     * A builder function that returns a new instance
+     *
+     * @returns {LaravelOrionAPI} An instance of itself
      */
     static make() {
         return new this();
     }
 
     /**
-     * @description Get a resource collection.
-     * @param {Object}      [data={}]                     The payload of the XHR request
-     * @param {String[]}    [data.includes]               An array of comma seperated strings
-     * @param {Object[]}    [data.aggregates]             An array of objects
-     * @param {String}      data.aggregates[].type        Type of the aggregate. F.e. count, sum, min, max, avg, exists
-     * @param {String}      data.aggregates[].relation    Relation of the aggregate.
+     * Get a resource collection.
+     *
+     * @param   {Object}       [data={}]                  The payload of the XHR request. Default is `{}`
+     * @param   {String[]}     [data.includes]            An array of comma seperated strings
+     * @param   {Object[]}     [data.aggregates]          An array of objects
+     * @param   {String}       data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
+     * @param   {String}       data.aggregates[].relation Relation of the aggregate.
      * @returns {AxiosPromise}                            An AxiosPromise
      */
     index(data = {}) {
@@ -33,33 +35,37 @@ class LaravelOrionAPI extends AxiosInstance {
             method: 'GET',
             baseURL: this.baseURL,
             url: `${this.path}${Transformer.toGetQuery(data)}`,
-            signal: this._injectAbort('index', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'index', this.autoAbort),
         });
     }
 
     /**
-     * @description Search a resource collection.
-     * @param {Object}          [data={}]                     The payload of the XHR request
-     * @param {Boolean}         [data.with_trashed]           If resource has softDeletes, you get a collection with trashed items
-     * @param {Boolean}         [data.only_trashed]           If resource has softDeletes, you get a collection with only trashed items
-     * @param {Number}          [data.page]                   If paginated, the current page of the collection
-     * @param {Number}          [data.limit]                  If paginated, the max. number of items per page
-     * @param {String|Object[]} [data.sort]                   The sorting the collection
-     * @param {String}          [data.search]                 Searching specific searchableBy data
-     * @param {Object[]}        [data.includes]               An array filled with include objects
-     * @param {String}          data.includes[].relation      Relation of the included resource.
-     * @param {Array}           [data.includes[].filters]     Relation of the included resource.
-     * @param {Object[]}        [data.filters]                An array filled with filter objects
-     * @param {String}          data.filters[].field          Field of the filter object
-     * @param {String}          [data.filters[].operator]     The operator of the filter object
-     * @param {String}          data.filters[].value          The value of the filter object
-     * @param {Object[]}        [data.scopes]                 An array filled with scope objects
-     * @param {String}          data.scopes[].name            The name of the scope
-     * @param {Array}           [data.scopes[].parameters]    Additional comma seperated parameters of the scope
-     * @param {Object[]}        [data.aggregates]             An array of objects
-     * @param {String}          data.aggregates[].type        Type of the aggregate. F.e. count, sum, min, max, avg, exists
-     * @param {String}          data.aggregates[].relation    Relation of the aggregate.
-     * @returns {AxiosPromise}                                An AxiosPromise
+     * Search a resource collection.
+     *
+     * @param   {Object}            [data={}]                            The payload of the XHR request. Default is `{}`
+     * @param   {Boolean}           [data.with_trashed]                  If resource has softDeletes, you get a collection with trashed items
+     * @param   {Boolean}           [data.only_trashed]                  If resource has softDeletes, you get a collection with only trashed items
+     * @param   {Number}            [data.page]                          If paginated, the current page of the collection
+     * @param   {Number}            [data.limit]                         If paginated, the max. number of items per page
+     * @param   {String | Object[]} [data.sort]                          The sorting the collection
+     * @param   {String}            [data.search]                        Searching specific searchableBy data
+     * @param   {Object[]}          [data.includes]                      An array filled with include objects
+     * @param   {String}            data.includes[].relation             Relation of the included resource.
+     * @param   {Array}             [data.includes[].filters]            Filters of the included resource.
+     * @param   {String}            data.includes[].filters[].field      Field of the filter object
+     * @param   {String}            [data.includes[].filters[].operator] The operator of the filter object
+     * @param   {String}            data.includes[].filters[].value      The value of the filter object
+     * @param   {Object[]}          [data.filters]                       An array filled with filter objects
+     * @param   {String}            data.filters[].field                 Field of the filter object
+     * @param   {String}            [data.filters[].operator]            The operator of the filter object
+     * @param   {String}            data.filters[].value                 The value of the filter object
+     * @param   {Object[]}          [data.scopes]                        An array filled with scope objects
+     * @param   {String}            data.scopes[].name                   The name of the scope
+     * @param   {Array}             [data.scopes[].parameters]           Additional comma seperated parameters of the scope
+     * @param   {Object[]}          [data.aggregates]                    An array of objects
+     * @param   {String}            data.aggregates[].type               Type of the aggregate. F.e. count, sum, min, max, avg, exists
+     * @param   {String}            data.aggregates[].relation           Relation of the aggregate.
+     * @returns {AxiosPromise}                                           An AxiosPromise
      */
     search(data = {}) {
         // Separate the URL here because we might want to add softDelete qs params
@@ -75,15 +81,16 @@ class LaravelOrionAPI extends AxiosInstance {
             baseURL: this.baseURL,
             url,
             data: Transformer.toPostData(data),
-            signal: this._injectAbort('search', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'search', this.autoAbort),
         });
     }
 
     /**
-     * @description Store a new resource item in your collection
-     * @param {Object}  [data={}]           The payload of the XHR request
-     * @param {Boolean} [multipart=false]   Sets the request to be multipart
-     * @returns {AxiosPromise}              An AxiosPromise
+     * Store a new resource item in your collection
+     *
+     * @param   {Object}       [data={}]         The payload of the XHR request. Default is `{}`
+     * @param   {Boolean}      [multipart=false] Sets the request to be multipart. Default is `false`
+     * @returns {AxiosPromise}                   An AxiosPromise
      */
     store(data = {}, multipart = false) {
         return this.axios({
@@ -92,36 +99,38 @@ class LaravelOrionAPI extends AxiosInstance {
             ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             url: this.path,
             data,
-            signal: this._injectAbort('store', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'store', this.autoAbort),
         });
     }
 
     /**
-     * @description Get a resource item.
-     * @param {String|Number}   id                            The ID of the requested resource item.
-     * @param {Object}          [data={}]                     The payload of the XHR request
-     * @param {String[]}        [data.includes]               An array of comma seperated strings
-     * @param {Object[]}        [data.aggregates]             An array of objects
-     * @param {String}          data.aggregates[].type        Type of the aggregate. F.e. count, sum, min, max, avg, exists
-     * @param {String}          data.aggregates[].relation    Relation of the aggregate.
-     * @returns {AxiosPromise}                                An AxiosPromise
+     * Get a resource item.
+     *
+     * @param   {String | Number} id                         The ID of the requested resource item.
+     * @param   {Object}          [data={}]                  The payload of the XHR request. Default is `{}`
+     * @param   {String[]}        [data.includes]            An array of comma seperated strings
+     * @param   {Object[]}        [data.aggregates]          An array of objects
+     * @param   {String}          data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
+     * @param   {String}          data.aggregates[].relation Relation of the aggregate.
+     * @returns {AxiosPromise}                               An AxiosPromise
      */
     show(id, data = {}) {
         return this.axios({
             method: 'GET',
             baseURL: this.baseURL,
             url: `${this.path}/${id}${Transformer.toGetQuery(data)}`,
-            signal: this._injectAbort('show', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'show', this.autoAbort),
         });
     }
 
     /**
-     * @description Update a single resource item.
-     * @param {String|Number}   id              The ID of the resource item to be updated
-     * @param {Object}          data            The payload of the XHR request
-     * @param {Boolean}         [multipart]     Sets the request to be multipart
-     * @param {String}          [method=PATCH]  Override the default patch method to be PUT
-     * @returns {AxiosPromise}                  An AxiosPromise
+     * Update a single resource item.
+     *
+     * @param   {String | Number} id             The ID of the resource item to be updated
+     * @param   {Object}          data           The payload of the XHR request
+     * @param   {Boolean}         [multipart]    Sets the request to be multipart
+     * @param   {String}          [method=PATCH] Override the default patch method to be PUT. Default is `PATCH`
+     * @returns {AxiosPromise}                   An AxiosPromise
      */
     update(id, data, multipart = false, method = 'PATCH') {
         if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
@@ -137,44 +146,47 @@ class LaravelOrionAPI extends AxiosInstance {
             ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             url: `${this.path}/${id}`,
             data,
-            signal: this._injectAbort('update', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'update', this.autoAbort),
         });
     }
 
     /**
-     * @description Destroy a single resource item.
-     * @param {String|Number}   id  The ID of the resource item to be destroyed
-     * @returns {AxiosPromise}      An AxiosPromise
+     * Destroy a single resource item.
+     *
+     * @param   {String | Number} id The ID of the resource item to be destroyed
+     * @returns {AxiosPromise}       An AxiosPromise
      */
     destroy(id) {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
             url: `${this.path}/${id}`,
-            signal: this._injectAbort('destroy', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'destroy', this.autoAbort),
         });
     }
 
     /**
-     * @description Restore a single resource item.
-     * @param {String|Number}   id  The ID of the resource item to be destroyed
-     * @returns {AxiosPromise}      An AxiosPromise
+     * Restore a single resource item.
+     *
+     * @param   {String | Number} id The ID of the resource item to be destroyed
+     * @returns {AxiosPromise}       An AxiosPromise
      */
     restore(id) {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/restore`,
-            signal: this._injectAbort('restore', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'restore', this.autoAbort),
         });
     }
 
     /**
-     * @description Batch store multiple resource items.
-     * @param {Object}          data            The payload of the XHR request
-     * @param {Object[]}        data.resources  A collection of resource items that need to be stored
-     * @param {Boolean}         [multipart]     Sets the request to be multipart
-     * @returns {AxiosPromise}                  An AxiosPromise
+     * Batch store multiple resource items.
+     *
+     * @param   {Object}       data           The payload of the XHR request
+     * @param   {Object[]}     data.resources A collection of resource items that need to be stored
+     * @param   {Boolean}      [multipart]    Sets the request to be multipart
+     * @returns {AxiosPromise}                An AxiosPromise
      */
     batchStore(data, multipart = false) {
         return this.axios({
@@ -183,16 +195,17 @@ class LaravelOrionAPI extends AxiosInstance {
             ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             url: `${this.path}/batch`,
             data,
-            signal: this._injectAbort('batchStore', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'batchStore', this.autoAbort),
         });
     }
 
     /**
-     * @description Batch store multiple resource items.
-     * @param {Object}          data            The payload of the XHR request
-     * @param {Object}          data.resources  A key (id) value (resource) collection of resource items
-     * @param {Boolean}         [multipart]     Sets the request to be multipart
-     * @returns {AxiosPromise}                  An AxiosPromise
+     * Batch store multiple resource items.
+     *
+     * @param   {Object}       data           The payload of the XHR request
+     * @param   {Object}       data.resources A key (id) value (resource) collection of resource items
+     * @param   {Boolean}      [multipart]    Sets the request to be multipart
+     * @returns {AxiosPromise}                An AxiosPromise
      */
     batchUpdate(data, multipart = false) {
         if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
@@ -208,15 +221,16 @@ class LaravelOrionAPI extends AxiosInstance {
             ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             url: `${this.path}/batch`,
             data,
-            signal: this._injectAbort('batchUpdate', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'batchUpdate', this.autoAbort),
         });
     }
 
     /**
-     * @description Batch destroy multiple resource items.
-     * @param {Object}          data            The payload of the XHR request
-     * @param {Number[]}        data.resources  A comma separated list of resources items that need to be destroyed
-     * @returns {AxiosPromise}                  An AxiosPromise
+     * Batch destroy multiple resource items.
+     *
+     * @param   {Object}       data           The payload of the XHR request
+     * @param   {Number[]}     data.resources A comma separated list of resources items that need to be destroyed
+     * @returns {AxiosPromise}                An AxiosPromise
      */
     batchDestroy(data) {
         return this.axios({
@@ -246,14 +260,15 @@ class LaravelOrionAPI extends AxiosInstance {
     }
 
     /**
-     * @description Get a relational collection of a single resource item
-     * @param {String}      id                            The ID of the resource
-     * @param {String}      relation                      The name of the relation
-     * @param {Object}      [data={}]                     The payload of the XHR request
-     * @param {String[]}    [data.includes]               An array of comma seperated strings
-     * @param {Object[]}    [data.aggregates]             An array of objects
-     * @param {String}      data.aggregates[].type        Type of the aggregate. F.e. count, sum, min, max, avg, exists
-     * @param {String}      data.aggregates[].relation    Relation of the aggregate.
+     * Get a relational collection of a single resource item
+     *
+     * @param   {String}       id                         The ID of the resource
+     * @param   {String}       relation                   The name of the relation
+     * @param   {Object}       [data={}]                  The payload of the XHR request. Default is `{}`
+     * @param   {String[]}     [data.includes]            An array of comma seperated strings
+     * @param   {Object[]}     [data.aggregates]          An array of objects
+     * @param   {String}       data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
+     * @param   {String}       data.aggregates[].relation Relation of the aggregate.
      * @returns {AxiosPromise}                            An AxiosPromise
      */
     indexRelation(id, relation, data) {
@@ -261,35 +276,36 @@ class LaravelOrionAPI extends AxiosInstance {
             method: 'GET',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}${Transformer.toGetQuery(data)}`,
-            signal: this._injectAbort('indexRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'indexRelation', this.autoAbort),
         });
     }
 
     /**
-     * @description Search a relational collection of a single resource item.
-     * @param {String}          id                            The ID of the resource
-     * @param {String}          relation                      The name of the relation
-     * @param {Object}          [data={}]                     The payload of the XHR request
-     * @param {Boolean}         [data.with_trashed]           If resource has softDeletes, you get a collection with trashed items
-     * @param {Boolean}         [data.only_trashed]           If resource has softDeletes, you get a collection with only trashed items
-     * @param {Number}          [data.page]                   If paginated, the current page of the collection
-     * @param {Number}          [data.limit]                  If paginated, the max. number of items per page
-     * @param {String|Object[]} [data.sort]                   The sorting the collection
-     * @param {String}          [data.search]                 Searching specific searchableBy data
-     * @param {Object[]}        [data.includes]               An array filled with include objects
-     * @param {String}          data.includes[].relation      Relation of the included resource.
-     * @param {Array}           [data.includes[].filters]     Relation of the included resource.
-     * @param {Object[]}        [data.filters]                An array filled with filter objects
-     * @param {String}          data.filters[].field          Field of the filter object
-     * @param {String}          [data.filters[].operator]     The operator of the filter object
-     * @param {String}          data.filters[].value          The value of the filter object
-     * @param {Object[]}        [data.scopes]                 An array filled with scope objects
-     * @param {String}          data.scopes[].name            The name of the scope
-     * @param {Array}           [data.scopes[].parameters]    Additional comma seperated parameters of the scope
-     * @param {Object[]}        [data.aggregates]             An array of objects
-     * @param {String}          data.aggregates[].type        Type of the aggregate. F.e. count, sum, min, max, avg, exists
-     * @param {String}          data.aggregates[].relation    Relation of the aggregate.
-     * @returns {AxiosPromise}                                An AxiosPromise
+     * Search a relational collection of a single resource item.
+     *
+     * @param   {String}            id                         The ID of the resource
+     * @param   {String}            relation                   The name of the relation
+     * @param   {Object}            [data={}]                  The payload of the XHR request. Default is `{}`
+     * @param   {Boolean}           [data.with_trashed]        If resource has softDeletes, you get a collection with trashed items
+     * @param   {Boolean}           [data.only_trashed]        If resource has softDeletes, you get a collection with only trashed items
+     * @param   {Number}            [data.page]                If paginated, the current page of the collection
+     * @param   {Number}            [data.limit]               If paginated, the max. number of items per page
+     * @param   {String | Object[]} [data.sort]                The sorting the collection
+     * @param   {String}            [data.search]              Searching specific searchableBy data
+     * @param   {Object[]}          [data.includes]            An array filled with include objects
+     * @param   {String}            data.includes[].relation   Relation of the included resource.
+     * @param   {Array}             [data.includes[].filters]  Relation of the included resource.
+     * @param   {Object[]}          [data.filters]             An array filled with filter objects
+     * @param   {String}            data.filters[].field       Field of the filter object
+     * @param   {String}            [data.filters[].operator]  The operator of the filter object
+     * @param   {String}            data.filters[].value       The value of the filter object
+     * @param   {Object[]}          [data.scopes]              An array filled with scope objects
+     * @param   {String}            data.scopes[].name         The name of the scope
+     * @param   {Array}             [data.scopes[].parameters] Additional comma seperated parameters of the scope
+     * @param   {Object[]}          [data.aggregates]          An array of objects
+     * @param   {String}            data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
+     * @param   {String}            data.aggregates[].relation Relation of the aggregate.
+     * @returns {AxiosPromise}                                 An AxiosPromise
      */
     searchRelation(id, relation, data = {}) {
         let url = `${this.path}/${id}/${relation}/search`;
@@ -305,37 +321,39 @@ class LaravelOrionAPI extends AxiosInstance {
             baseURL: this.baseURL,
             url,
             data: Transformer.toPostData(data),
-            signal: this._injectAbort('searchRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'searchRelation', this.autoAbort),
         });
     }
 
     /**
-     * @description Get a single relational item of a resource item.
-     * @param {String|Number}   id                            The ID of the requested resource item.
-     * @param {String}          relation                      The name of the relation
-     * @param {String}          relationId                    The ID of the relation
-     * @param {Object}          [data={}]                     The payload of the XHR request
-     * @param {String[]}        [data.includes]               An array of comma seperated strings
-     * @param {Object[]}        [data.aggregates]             An array of objects
-     * @param {String}          data.aggregates[].type        Type of the aggregate. F.e. count, sum, min, max, avg, exists
-     * @param {String}          data.aggregates[].relation    Relation of the aggregate.
-     * @returns {AxiosPromise}                                An AxiosPromise
+     * Get a single relational item of a resource item.
+     *
+     * @param   {String | Number} id                         The ID of the requested resource item.
+     * @param   {String}          relation                   The name of the relation
+     * @param   {String}          relationId                 The ID of the relation
+     * @param   {Object}          [data={}]                  The payload of the XHR request. Default is `{}`
+     * @param   {String[]}        [data.includes]            An array of comma seperated strings
+     * @param   {Object[]}        [data.aggregates]          An array of objects
+     * @param   {String}          data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
+     * @param   {String}          data.aggregates[].relation Relation of the aggregate.
+     * @returns {AxiosPromise}                               An AxiosPromise
      */
     showRelation(id, relation, relationId, data) {
         return this.axios({
             method: 'GET',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/${relationId}${Transformer.toGetQuery(data)}`,
-            signal: this._injectAbort('showRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'showRelation', this.autoAbort),
         });
     }
 
     /**
-     * @description Stores a relational resource item to single resource item
-     * @param {String|Number}   id                  The ID of the requested resource item.
-     * @param {String}          relation            The name of the relation
-     * @param {Object}          [data={}]           The payload of the XHR request
-     * @param {Boolean}         [multipart=false]   Sets the request to be multipart
+     * Stores a relational resource item to single resource item
+     *
+     * @param   {String | Number} id                The ID of the requested resource item.
+     * @param   {String}          relation          The name of the relation
+     * @param   {Object}          [data={}]         The payload of the XHR request. Default is `{}`
+     * @param   {Boolean}         [multipart=false] Sets the request to be multipart. Default is `false`
      * @returns {AxiosPromise}                      An AxiosPromise
      */
     storeRelation(id, relation, data, multipart) {
@@ -345,18 +363,19 @@ class LaravelOrionAPI extends AxiosInstance {
             url: `${this.path}/${id}/${relation}`,
             ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             data,
-            signal: this._injectAbort('storeRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'storeRelation', this.autoAbort),
         });
     }
 
     /**
-     * @description Update a relational resource item of a single resource item.
-     * @param {String|Number}   id              The ID of the resource item to be updated
-     * @param {String}          relation        The name of the relation
-     * @param {String}          relationId      The ID of the relation
-     * @param {Object}          data            The payload of the XHR request
-     * @param {Boolean}         [multipart]     Sets the request to be multipart
-     * @returns {AxiosPromise}                  An AxiosPromise
+     * Update a relational resource item of a single resource item.
+     *
+     * @param   {String | Number} id          The ID of the resource item to be updated
+     * @param   {String}          relation    The name of the relation
+     * @param   {String}          relationId  The ID of the relation
+     * @param   {Object}          data        The payload of the XHR request
+     * @param   {Boolean}         [multipart] Sets the request to be multipart
+     * @returns {AxiosPromise}                An AxiosPromise
      */
     updateRelation(id, relation, relationId, data, multipart) {
         if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
@@ -372,42 +391,54 @@ class LaravelOrionAPI extends AxiosInstance {
             ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             url: `${this.path}/${id}/${relation}/${relationId}`,
             data,
-            signal: this._injectAbort('updateRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'updateRelation', this.autoAbort),
         });
     }
 
     /**
-     * @description Destroy a relational resource item of a single resource item.
-     * @param {String|Number}   id              The ID of the resource item to be destroyed
-     * @param {String}          relation        The name of the relation
-     * @param {String}          relationId      The ID of the relation
-     * @returns {AxiosPromise}                  An AxiosPromise
+     * Destroy a relational resource item of a single resource item.
+     *
+     * @param   {String | Number} id         The ID of the resource item to be destroyed
+     * @param   {String}          relation   The name of the relation
+     * @param   {String}          relationId The ID of the relation
+     * @returns {AxiosPromise}               An AxiosPromise
      */
     destroyRelation(id, relation, relationId) {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/${relationId}`,
-            signal: this._injectAbort('destroyRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'destroyRelation', this.autoAbort),
         });
     }
 
     /**
-     * @description Restore a relational resource item of a single resource item.
-     * @param {String|Number}   id              The ID of the resource item to be destroyed
-     * @param {String}          relation        The name of the relation
-     * @param {String}          relationId      The ID of the relation
-     * @returns {AxiosPromise}                  An AxiosPromise
+     * Restore a relational resource item of a single resource item.
+     *
+     * @param   {String | Number} id         The ID of the resource item to be restored
+     * @param   {String}          relation   The name of the relation
+     * @param   {String}          relationId The ID of the relation
+     * @returns {AxiosPromise}               An AxiosPromise
      */
     restoreRelation(id, relation, relationId) {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/${relationId}/restore`,
-            signal: this._injectAbort('restoreRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'restoreRelation', this.autoAbort),
         });
     }
 
+    /**
+     * Batch store multiple relational resource items to a single resource item
+     *
+     * @param   {String | Number} id             The ID of the resource item where to items will be stored
+     * @param   {String}          relation       The name of the relation
+     * @param   {Object}          data           The payload of the XHR request
+     * @param   {Object[]}        data.resources A collection of resource items that need to be stored
+     * @param   {Boolean}         [multipart]    Sets the request to be multipart
+     * @returns {AxiosPromise}                   An AxiosPromise
+     */
     batchStoreRelation(id, relation, data, multipart) {
         return this.axios({
             method: 'POST',
@@ -415,10 +446,20 @@ class LaravelOrionAPI extends AxiosInstance {
             ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             url: `${this.path}/${id}/${relation}/batch`,
             data,
-            signal: this._injectAbort('batchStoreRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'batchStoreRelation', this.autoAbort),
         });
     }
 
+    /**
+     * Batch update multiple relational resource items to a single resource item
+     *
+     * @param   {String | Number} id             The ID of the resource item where the items will be updated
+     * @param   {String}          relation       The name of the relation
+     * @param   {Object}          data           The payload of the XHR request
+     * @param   {Object}          data.resources A key (id) value (resource) collection of resource items
+     * @param   {Boolean}         [multipart]    Sets the request to be multipart
+     * @returns {AxiosPromise}                   An AxiosPromise
+     */
     batchUpdateRelation(id, relation, data, multipart) {
         if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
             data.append('_method', 'PATCH');
@@ -433,101 +474,191 @@ class LaravelOrionAPI extends AxiosInstance {
             url: `${this.path}/${id}/${relation}/batch`,
             ...(multipart && { headers: { 'Content-Type': 'multipart/form-data' } }),
             data,
-            signal: this._injectAbort('batchUpdateRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'batchUpdateRelation', this.autoAbort),
         });
     }
 
+    /**
+     * Batch destroy multiple relational resource items of a single resource item
+     *
+     * @param   {String | Number} id             The ID of the resource item where the items will be destroyed
+     * @param   {String}          relation       The name of the relation
+     * @param   {Object}          data           The payload of the XHR request
+     * @param   {Number[]}        data.resources A comma separated list of resources items that need to be destroyed
+     * @returns {AxiosPromise}                   An AxiosPromise
+     */
     batchDestroyRelation(id, relation, data) {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/batch`,
             data,
-            signal: this._injectAbort('batchDestroyRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'batchDestroyRelation', this.autoAbort),
         });
     }
 
+    /**
+     * Batch restore multiple relational resource items of a single resource item
+     *
+     * @param   {String | Number} id             The ID of the resource item of which the items will be restored
+     * @param   {String}          relation       The name of the relation
+     * @param   {Object}          data           The payload of the XHR request
+     * @param   {Number[]}        data.resources A comma separated list of resources items that need to be destroyed
+     * @returns {AxiosPromise}                   An AxiosPromise
+     */
     batchRestoreRelation(id, relation, data) {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/batch/restore`,
             data,
-            signal: this._injectAbort('batchRestoreRelation', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'batchRestoreRelation', this.autoAbort),
         });
     }
 
+    /**
+     * Sync associations of one or multiple related models with another model.
+     *
+     * @param   {String | Number}   id             The ID of the resource item
+     * @param   {String}            relation       The name of the relation
+     * @param   {Object}            data           The payload of the XHR request
+     * @param   {Number[] | Object} data.resources If it is an array, then array items would be IDs of related models that you would like to sync. If it is an object, then its keys would be IDs of
+     *   related models and values - objects containing pivot table fields to be set upon syncing the related model.
+     * @returns {AxiosPromise}                     An AxiosPromise
+     */
     sync(id, relation, data) {
         return this.axios({
             method: 'PATCH',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/sync`,
             data,
-            signal: this._injectAbort('sync', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'sync', this.autoAbort),
         });
     }
 
+    /**
+     * Toggle relations of one or multiple related models with another model.
+     *
+     * @param   {String | Number}   id             The ID of the resource item
+     * @param   {String}            relation       The name of the relation
+     * @param   {Object}            data           The payload of the XHR request
+     * @param   {Number[] | Object} data.resources If it is an array, then array items would be IDs of related models that you would like to sync. If it is an object, then its keys would be IDs of
+     *   related models and values - objects containing pivot table fields to be set upon syncing the related model.
+     * @returns {AxiosPromise}                     An AxiosPromise
+     */
     toggle(id, relation, data) {
         return this.axios({
             method: 'PATCH',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/toggle`,
             data,
-            signal: this._injectAbort('toggle', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'toggle', this.autoAbort),
         });
     }
 
+    /**
+     * Attach one or multiple resources to a relation
+     *
+     * @param   {String | Number}   id             The ID of the resource item
+     * @param   {String}            relation       The name of the relation
+     * @param   {Object}            data           The payload of the XHR request
+     * @param   {Number[] | Object} data.resources If it is an array, then array items would be IDs of related models that you would like to sync. If it is an object, then its keys would be IDs of
+     *   related models and values - objects containing pivot table fields to be set upon syncing the related model.
+     * @returns {AxiosPromise}                     An AxiosPromise
+     */
     attach(id, relation, data) {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/attach`,
             data,
-            signal: this._injectAbort('attach', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'attach', this.autoAbort),
         });
     }
 
+    /**
+     * Detach one or multiple (or partial) resources of a relation
+     *
+     * @param   {String | Number}   id             The ID of the resource item
+     * @param   {String}            relation       The name of the relation
+     * @param   {Object}            data           The payload of the XHR request
+     * @param   {Number[] | Object} data.resources If it is an array, then array items would be IDs of related models that you would like to sync. If it is an object, then its keys would be IDs of
+     *   related models and values - objects containing pivot table fields to be set upon syncing the related model.
+     * @returns {AxiosPromise}                     An AxiosPromise
+     */
     detach(id, relation, data) {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/detach`,
             data,
-            signal: this._injectAbort('detach', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'detach', this.autoAbort),
         });
     }
 
+    /**
+     * Pivot one or multiple pivot fields of a relation
+     *
+     * @param   {String | Number} id         The ID of the resource item
+     * @param   {String}          relation   The name of the relation
+     * @param   {String | Number} relationId The ID of the relation
+     * @param   {Object}          data       The payload of the XHR request
+     * @param   {Object}          data.pivot An field value object
+     * @returns {AxiosPromise}               An AxiosPromise
+     */
     pivot(id, relation, relationId, data) {
         return this.axios({
             method: 'PATCH',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/${relationId}/pivot`,
             data,
-            signal: this._injectAbort('pivot', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'pivot', this.autoAbort),
         });
     }
 
-    associate(id, relation, relatedKey) {
+    /**
+     * Associate a single resource to a single relational resource item
+     *
+     * @param   {String | Number} id         The ID of the resource item
+     * @param   {String}          relation   The name of the relation
+     * @param   {String | Number} relationId The ID of the relation that will be associated
+     * @returns {AxiosPromise}               An AxiosPromise
+     */
+    associate(id, relation, relationId) {
         return this.axios({
             method: 'POST',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/associate`,
             data: {
-                related_key: relatedKey,
+                related_key: relationId,
             },
-            signal: this._injectAbort('associate', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'associate', this.autoAbort),
         });
     }
 
+    /**
+     * Dissociate a single resource to a single relational resource item
+     *
+     * @param   {String | Number} id         The ID of the resource item
+     * @param   {String}          relation   The name of the relation
+     * @param   {String | Number} relationId The ID of the relation that will be associated
+     * @returns {AxiosPromise}               An AxiosPromise
+     */
     dissociate(id, relation, relationId) {
         return this.axios({
             method: 'DELETE',
             baseURL: this.baseURL,
             url: `${this.path}/${id}/${relation}/${relationId}/dissociate`,
-            signal: this._injectAbort('dissociate', this.autoAbort, this.abortId),
+            signal: this._injectAbort(this.abortId || 'dissociate', this.autoAbort),
         });
     }
 
+    /**
+     * Abort an ongoing request by ID
+     *
+     * @param   {String} id The ID of the abortController. This can be a method name (f.e. index, show) or a custom name that was passed via the withAbortId method
+     * @returns {void}      Absolutely nothing
+     */
     abort(id) {
         if (this._abortControllers[id]) {
             this._abortControllers[id].abort();
@@ -535,6 +666,11 @@ class LaravelOrionAPI extends AxiosInstance {
         }
     }
 
+    /**
+     * Sets autoAbort to true for the entire instance.
+     *
+     * @returns {LaravelOrionAPI} Instance of the LaravelOrionAPI
+     */
     withAutoAbort() {
         // Create a clone of this class
         // https://stackoverflow.com/a/44782052
@@ -545,6 +681,11 @@ class LaravelOrionAPI extends AxiosInstance {
         return clonedThis;
     }
 
+    /**
+     * Sets autoAbort to false for the entire instance.
+     *
+     * @returns {LaravelOrionAPI} Instance of the LaravelOrionAPI
+     */
     withoutAutoAbort() {
         // Create a clone of this class
         // https://stackoverflow.com/a/44782052
@@ -555,6 +696,11 @@ class LaravelOrionAPI extends AxiosInstance {
         return clonedThis;
     }
 
+    /**
+     * Set the abortId for the entire instance
+     *
+     * @returns {LaravelOrionAPI} Instance of the LaravelOrionAPI
+     */
     withAbortId(id) {
         if (!id) {
             throw new Error('No abort ID declared');
@@ -568,16 +714,23 @@ class LaravelOrionAPI extends AxiosInstance {
         return clonedThis;
     }
 
-    _injectAbort(methodName, autoAbort = true, abortId = undefined) {
+    /**
+     * Adds autoAbort logic to a specific method and returns a signal that can be used.
+     *
+     * @private
+     * @param   {String}      abortControllerId Name of the method
+     * @param   {Boolean}     autoAbort         Set the autoAbort to true or false
+     * @returns {AbortSignal}                   An AbortSignal
+     */
+    _injectAbort(abortControllerId, autoAbort = true) {
         // Auto abort if autoAbort is true and no abortId was set
-        if (autoAbort && this._abortControllers[methodName] && !abortId) {
-            this.abort(methodName);
-        } else if (autoAbort && abortId && this._abortControllers[abortId]) {
-            this.abort(abortId);
+        if (autoAbort && this._abortControllers[abortControllerId]) {
+            this.abort(abortControllerId);
         }
+
         // Create abort controller and store it in this instance
         const abortController = new AbortController();
-        this._abortControllers[abortId || methodName] = abortController;
+        this._abortControllers[abortControllerId] = abortController;
         // Return Signal
         return abortController.signal;
     }
