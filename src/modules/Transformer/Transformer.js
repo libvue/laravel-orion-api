@@ -34,13 +34,15 @@ class Transformer {
      */
     static toGetQuery(options = DEFAULT_GET_CONFIG) {
         let query = '?';
+        
+        // Merge all default config files
         Object.entries({ ...DEFAULT_GET_CONFIG, ...options }).forEach(([key]) => {
             // Check if given option is not null
             if (typeof options[key] !== 'undefined' && options[key] !== null) {
-                if(query !== '?' && GetParsers.parseByKey(key, options[key], true)) {
+                if(query !== '?' && GetParsers.parseByKey(key, options[key])) {
                     query += '&';
                 }
-                query += GetParsers.parseByKey(key, options[key], true);
+                query += GetParsers.parseByKey(key, options[key]);
             }
         });
         return query.length > 1 ? query : '';

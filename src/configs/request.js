@@ -3,9 +3,10 @@ export default {
         page: 1,
         limit: 20,
         sort: null,
-        filters: null,
         search: null,
         includes: null,
+        filters: null,
+        scopes: null,
         aggregates: null,
     },
     get: {

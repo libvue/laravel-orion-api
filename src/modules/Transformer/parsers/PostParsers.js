@@ -11,11 +11,11 @@ export default class PostParsers {
         }
         return value;
     }
-    
+
     static parseFilters(value) {
-        return structuredClone(value).filter((obj) => typeof obj.value !== 'undefined');
+        return JSON.parse(JSON.stringify(value)).filter((obj) => typeof obj.value !== 'undefined');
     }
-    
+
     static parseSearch(value) {
         if (typeof value === 'string' && value !== '') {
             return {
