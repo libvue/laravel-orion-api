@@ -23,12 +23,12 @@ class LaravelOrionAPI extends AxiosInstance {
     /**
      * Get a resource collection.
      *
-     * @param   {Object}       [data={}]                  The payload of the XHR request. Default is `{}`
-     * @param   {String[]}     [data.includes]            An array of comma seperated strings
-     * @param   {Object[]}     [data.aggregates]          An array of objects
-     * @param   {String}       data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
-     * @param   {String}       data.aggregates[].relation Relation of the aggregate.
-     * @returns {AxiosPromise}                            An AxiosPromise
+     * @param   {Object}   [data={}]                  The payload of the XHR request. Default is `{}`
+     * @param   {String[]} [data.includes]            An array of comma seperated strings
+     * @param   {Object[]} [data.aggregates]          An array of objects
+     * @param   {String}   data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
+     * @param   {String}   data.aggregates[].relation Relation of the aggregate.
+     * @returns {Promise}                             A Promise
      */
     index(data = {}) {
         return this.axios({
@@ -65,7 +65,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object[]}          [data.aggregates]                    An array of objects
      * @param   {String}            data.aggregates[].type               Type of the aggregate. F.e. count, sum, min, max, avg, exists
      * @param   {String}            data.aggregates[].relation           Relation of the aggregate.
-     * @returns {AxiosPromise}                                           An AxiosPromise
+     * @returns {Promise}                                                A Promise
      */
     search(data = {}) {
         // Separate the URL here because we might want to add softDelete qs params
@@ -88,9 +88,9 @@ class LaravelOrionAPI extends AxiosInstance {
     /**
      * Store a new resource item in your collection
      *
-     * @param   {Object}       [data={}]         The payload of the XHR request. Default is `{}`
-     * @param   {Boolean}      [multipart=false] Sets the request to be multipart. Default is `false`
-     * @returns {AxiosPromise}                   An AxiosPromise
+     * @param   {Object}  [data={}]         The payload of the XHR request. Default is `{}`
+     * @param   {Boolean} [multipart=false] Sets the request to be multipart. Default is `false`
+     * @returns {Promise}                   A Promise
      */
     store(data = {}, multipart = false) {
         return this.axios({
@@ -112,7 +112,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object[]}        [data.aggregates]          An array of objects
      * @param   {String}          data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
      * @param   {String}          data.aggregates[].relation Relation of the aggregate.
-     * @returns {AxiosPromise}                               An AxiosPromise
+     * @returns {Promise}                                    A Promise
      */
     show(id, data = {}) {
         return this.axios({
@@ -130,7 +130,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object}          data           The payload of the XHR request
      * @param   {Boolean}         [multipart]    Sets the request to be multipart
      * @param   {String}          [method=PATCH] Override the default patch method to be PUT. Default is `PATCH`
-     * @returns {AxiosPromise}                   An AxiosPromise
+     * @returns {Promise}                        A Promise
      */
     update(id, data, multipart = false, method = 'PATCH') {
         if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
@@ -154,7 +154,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * Destroy a single resource item.
      *
      * @param   {String | Number} id The ID of the resource item to be destroyed
-     * @returns {AxiosPromise}       An AxiosPromise
+     * @returns {Promise}            A Promise
      */
     destroy(id) {
         return this.axios({
@@ -169,7 +169,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * Restore a single resource item.
      *
      * @param   {String | Number} id The ID of the resource item to be destroyed
-     * @returns {AxiosPromise}       An AxiosPromise
+     * @returns {Promise}            A Promise
      */
     restore(id) {
         return this.axios({
@@ -183,10 +183,10 @@ class LaravelOrionAPI extends AxiosInstance {
     /**
      * Batch store multiple resource items.
      *
-     * @param   {Object}       data           The payload of the XHR request
-     * @param   {Object[]}     data.resources A collection of resource items that need to be stored
-     * @param   {Boolean}      [multipart]    Sets the request to be multipart
-     * @returns {AxiosPromise}                An AxiosPromise
+     * @param   {Object}   data           The payload of the XHR request
+     * @param   {Object[]} data.resources A collection of resource items that need to be stored
+     * @param   {Boolean}  [multipart]    Sets the request to be multipart
+     * @returns {Promise}                 A Promise
      */
     batchStore(data, multipart = false) {
         return this.axios({
@@ -202,10 +202,10 @@ class LaravelOrionAPI extends AxiosInstance {
     /**
      * Batch store multiple resource items.
      *
-     * @param   {Object}       data           The payload of the XHR request
-     * @param   {Object}       data.resources A key (id) value (resource) collection of resource items
-     * @param   {Boolean}      [multipart]    Sets the request to be multipart
-     * @returns {AxiosPromise}                An AxiosPromise
+     * @param   {Object}  data           The payload of the XHR request
+     * @param   {Object}  data.resources A key (id) value (resource) collection of resource items
+     * @param   {Boolean} [multipart]    Sets the request to be multipart
+     * @returns {Promise}                A Promise
      */
     batchUpdate(data, multipart = false) {
         if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
@@ -228,9 +228,9 @@ class LaravelOrionAPI extends AxiosInstance {
     /**
      * Batch destroy multiple resource items.
      *
-     * @param   {Object}       data           The payload of the XHR request
-     * @param   {Number[]}     data.resources A comma separated list of resources items that need to be destroyed
-     * @returns {AxiosPromise}                An AxiosPromise
+     * @param   {Object}   data           The payload of the XHR request
+     * @param   {Number[]} data.resources A comma separated list of resources items that need to be destroyed
+     * @returns {Promise}                 A Promise
      */
     batchDestroy(data) {
         return this.axios({
@@ -245,9 +245,9 @@ class LaravelOrionAPI extends AxiosInstance {
     /**
      * Batch restore multiple resource items.
      *
-     * @param   {Object}       data           The payload of the XHR request
-     * @param   {Number[]}     data.resources A comma separated list of resources items that need to be destroyed
-     * @returns {AxiosPromise}                An AxiosPromise
+     * @param   {Object}   data           The payload of the XHR request
+     * @param   {Number[]} data.resources A comma separated list of resources items that need to be destroyed
+     * @returns {Promise}                 A Promise
      */
     batchRestore(data) {
         return this.axios({
@@ -262,14 +262,14 @@ class LaravelOrionAPI extends AxiosInstance {
     /**
      * Get a relational collection of a single resource item
      *
-     * @param   {String}       id                         The ID of the resource
-     * @param   {String}       relation                   The name of the relation
-     * @param   {Object}       [data={}]                  The payload of the XHR request. Default is `{}`
-     * @param   {String[]}     [data.includes]            An array of comma seperated strings
-     * @param   {Object[]}     [data.aggregates]          An array of objects
-     * @param   {String}       data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
-     * @param   {String}       data.aggregates[].relation Relation of the aggregate.
-     * @returns {AxiosPromise}                            An AxiosPromise
+     * @param   {String}   id                         The ID of the resource
+     * @param   {String}   relation                   The name of the relation
+     * @param   {Object}   [data={}]                  The payload of the XHR request. Default is `{}`
+     * @param   {String[]} [data.includes]            An array of comma seperated strings
+     * @param   {Object[]} [data.aggregates]          An array of objects
+     * @param   {String}   data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
+     * @param   {String}   data.aggregates[].relation Relation of the aggregate.
+     * @returns {Promise}                             A Promise
      */
     indexRelation(id, relation, data) {
         return this.axios({
@@ -305,7 +305,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object[]}          [data.aggregates]          An array of objects
      * @param   {String}            data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
      * @param   {String}            data.aggregates[].relation Relation of the aggregate.
-     * @returns {AxiosPromise}                                 An AxiosPromise
+     * @returns {Promise}                                      A Promise
      */
     searchRelation(id, relation, data = {}) {
         let url = `${this.path}/${id}/${relation}/search`;
@@ -336,7 +336,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object[]}        [data.aggregates]          An array of objects
      * @param   {String}          data.aggregates[].type     Type of the aggregate. F.e. count, sum, min, max, avg, exists
      * @param   {String}          data.aggregates[].relation Relation of the aggregate.
-     * @returns {AxiosPromise}                               An AxiosPromise
+     * @returns {Promise}                                    A Promise
      */
     showRelation(id, relation, relationId, data) {
         return this.axios({
@@ -354,7 +354,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {String}          relation          The name of the relation
      * @param   {Object}          [data={}]         The payload of the XHR request. Default is `{}`
      * @param   {Boolean}         [multipart=false] Sets the request to be multipart. Default is `false`
-     * @returns {AxiosPromise}                      An AxiosPromise
+     * @returns {Promise}                           A Promise
      */
     storeRelation(id, relation, data, multipart) {
         return this.axios({
@@ -375,7 +375,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {String}          relationId  The ID of the relation
      * @param   {Object}          data        The payload of the XHR request
      * @param   {Boolean}         [multipart] Sets the request to be multipart
-     * @returns {AxiosPromise}                An AxiosPromise
+     * @returns {Promise}                     A Promise
      */
     updateRelation(id, relation, relationId, data, multipart) {
         if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
@@ -401,7 +401,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {String | Number} id         The ID of the resource item to be destroyed
      * @param   {String}          relation   The name of the relation
      * @param   {String}          relationId The ID of the relation
-     * @returns {AxiosPromise}               An AxiosPromise
+     * @returns {Promise}                    A Promise
      */
     destroyRelation(id, relation, relationId) {
         return this.axios({
@@ -418,7 +418,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {String | Number} id         The ID of the resource item to be restored
      * @param   {String}          relation   The name of the relation
      * @param   {String}          relationId The ID of the relation
-     * @returns {AxiosPromise}               An AxiosPromise
+     * @returns {Promise}                    A Promise
      */
     restoreRelation(id, relation, relationId) {
         return this.axios({
@@ -437,7 +437,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object}          data           The payload of the XHR request
      * @param   {Object[]}        data.resources A collection of resource items that need to be stored
      * @param   {Boolean}         [multipart]    Sets the request to be multipart
-     * @returns {AxiosPromise}                   An AxiosPromise
+     * @returns {Promise}                        A Promise
      */
     batchStoreRelation(id, relation, data, multipart) {
         return this.axios({
@@ -458,7 +458,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object}          data           The payload of the XHR request
      * @param   {Object}          data.resources A key (id) value (resource) collection of resource items
      * @param   {Boolean}         [multipart]    Sets the request to be multipart
-     * @returns {AxiosPromise}                   An AxiosPromise
+     * @returns {Promise}                        A Promise
      */
     batchUpdateRelation(id, relation, data, multipart) {
         if (multipart && typeof data === 'object' && data.constructor.name === 'FormData') {
@@ -485,7 +485,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {String}          relation       The name of the relation
      * @param   {Object}          data           The payload of the XHR request
      * @param   {Number[]}        data.resources A comma separated list of resources items that need to be destroyed
-     * @returns {AxiosPromise}                   An AxiosPromise
+     * @returns {Promise}                        A Promise
      */
     batchDestroyRelation(id, relation, data) {
         return this.axios({
@@ -504,7 +504,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {String}          relation       The name of the relation
      * @param   {Object}          data           The payload of the XHR request
      * @param   {Number[]}        data.resources A comma separated list of resources items that need to be destroyed
-     * @returns {AxiosPromise}                   An AxiosPromise
+     * @returns {Promise}                        A Promise
      */
     batchRestoreRelation(id, relation, data) {
         return this.axios({
@@ -524,7 +524,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object}            data           The payload of the XHR request
      * @param   {Number[] | Object} data.resources If it is an array, then array items would be IDs of related models that you would like to sync. If it is an object, then its keys would be IDs of
      *   related models and values - objects containing pivot table fields to be set upon syncing the related model.
-     * @returns {AxiosPromise}                     An AxiosPromise
+     * @returns {Promise}                          A Promise
      */
     sync(id, relation, data) {
         return this.axios({
@@ -544,7 +544,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object}            data           The payload of the XHR request
      * @param   {Number[] | Object} data.resources If it is an array, then array items would be IDs of related models that you would like to sync. If it is an object, then its keys would be IDs of
      *   related models and values - objects containing pivot table fields to be set upon syncing the related model.
-     * @returns {AxiosPromise}                     An AxiosPromise
+     * @returns {Promise}                          A Promise
      */
     toggle(id, relation, data) {
         return this.axios({
@@ -564,7 +564,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object}            data           The payload of the XHR request
      * @param   {Number[] | Object} data.resources If it is an array, then array items would be IDs of related models that you would like to sync. If it is an object, then its keys would be IDs of
      *   related models and values - objects containing pivot table fields to be set upon syncing the related model.
-     * @returns {AxiosPromise}                     An AxiosPromise
+     * @returns {Promise}                          A Promise
      */
     attach(id, relation, data) {
         return this.axios({
@@ -584,7 +584,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {Object}            data           The payload of the XHR request
      * @param   {Number[] | Object} data.resources If it is an array, then array items would be IDs of related models that you would like to sync. If it is an object, then its keys would be IDs of
      *   related models and values - objects containing pivot table fields to be set upon syncing the related model.
-     * @returns {AxiosPromise}                     An AxiosPromise
+     * @returns {Promise}                          A Promise
      */
     detach(id, relation, data) {
         return this.axios({
@@ -604,7 +604,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {String | Number} relationId The ID of the relation
      * @param   {Object}          data       The payload of the XHR request
      * @param   {Object}          data.pivot An field value object
-     * @returns {AxiosPromise}               An AxiosPromise
+     * @returns {Promise}                    A Promise
      */
     pivot(id, relation, relationId, data) {
         return this.axios({
@@ -622,7 +622,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {String | Number} id         The ID of the resource item
      * @param   {String}          relation   The name of the relation
      * @param   {String | Number} relationId The ID of the relation that will be associated
-     * @returns {AxiosPromise}               An AxiosPromise
+     * @returns {Promise}                    A Promise
      */
     associate(id, relation, relationId) {
         return this.axios({
@@ -642,7 +642,7 @@ class LaravelOrionAPI extends AxiosInstance {
      * @param   {String | Number} id         The ID of the resource item
      * @param   {String}          relation   The name of the relation
      * @param   {String | Number} relationId The ID of the relation that will be associated
-     * @returns {AxiosPromise}               An AxiosPromise
+     * @returns {Promise}                    A Promise
      */
     dissociate(id, relation, relationId) {
         return this.axios({
