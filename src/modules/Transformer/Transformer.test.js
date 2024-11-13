@@ -26,7 +26,19 @@ describe('The toPostData method of the Transformer class works properly.', () =>
         })).toStrictEqual(
             { page: 1, limit: 20, sort: [{ field: 'id', direction: 'asc' }] }
         );
-        
+
+        expect(Transformer.toPostData({
+            sort: '-options->key',
+        })).toStrictEqual(
+            { page: 1, limit: 20, sort: [{ field: 'options->key', direction: 'desc' }] }
+        );
+
+        expect(Transformer.toPostData({
+            sort: 'options->key',
+        })).toStrictEqual(
+            { page: 1, limit: 20, sort: [{ field: 'options->key', direction: 'asc' }] }
+        );
+
         expect(Transformer.toPostData({
             sort: [{ field: 'id', direction: 'asc' }],
         })).toStrictEqual(
