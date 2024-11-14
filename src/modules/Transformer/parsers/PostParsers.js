@@ -31,7 +31,7 @@ export default class PostParsers {
         if (typeof value === 'string') {
             return [
                 {
-                    field: value.replace('-', ''),
+                    field: value.replace(/^-/i, ''),
                     direction: value.startsWith('-') ? 'desc' : 'asc',
                 },
             ];
